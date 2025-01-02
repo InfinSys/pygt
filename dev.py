@@ -1,6 +1,7 @@
 
 #   IMPORTS
-from window import AppWindow
+import pygt
+from pygt.window import AppWindow
 
 
 if __name__ == "__main__":

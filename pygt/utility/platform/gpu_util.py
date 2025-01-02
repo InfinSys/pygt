@@ -7,7 +7,7 @@ from screeninfo import get_monitors
 
 
 #   INTERNAL IMPORTS
-from utility.platform import is_windows_platform
+from pygt.utility.platform import is_windows_platform
 
 
 def win32_get_total_displays() -> int:

@@ -7,11 +7,11 @@ import tkinter as tk
 
 
 #   INTERNAL IMPORTS
-from window.window_controller import WindowController
-from window.window_event import WindowEventHandler
-from window.window_service import WindowServiceBroker, WindowService
-#from window.window_view import WindowViewApparatus
-import window.window_service.service_keys as SvcKey
+from pygt.window.window_controller import WindowController
+from pygt.window.window_event import WindowEventHandler
+from pygt.window.window_service import WindowServiceBroker, WindowService
+#from pygt.window.window_view import WindowViewApparatus
+import pygt.window.window_service.service_keys as SvcKey
 
 
 # Application DPI awareness

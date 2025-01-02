@@ -39,4 +39,4 @@
 
 
 #   EXTENDED SYMBOLS
-import window as Window
+pass

@@ -7,7 +7,7 @@ from tkinter import Tk
 
 
 #   INTERNAL IMPORTS
-from utility.platform import get_windows_version,  \
+from pygt.utility.platform import get_windows_version,  \
     win32_get_display_bounds, win32_get_display_bounding_boxes, \
     win32_get_display_dimensions, win32_get_display_coordinates
 
