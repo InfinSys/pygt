@@ -7,7 +7,7 @@ import tkinter as tk
 
 
 #   INTERNAL IMPORTS
-from pygt.window.window_controller import WindowController
+from pygt.window.controller import WindowController
 from pygt.window.window_event import WindowEventHandler
 from pygt.window.window_service import WindowServiceBroker, WindowService
 #from pygt.window.window_view import WindowViewApparatus
