@@ -1,6 +1,6 @@
 
 """
-     Python Graphical User Interface Toolkit
+     **Python Graphical User Interface Toolkit**
 
      Copyright (C) 2025 Infinity Systems, LLC.
         Jamon Bailey <infinity.dev@outlook.com>
@@ -29,13 +29,13 @@
      ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
      DEALINGS IN THE SOFTWARE.
 
-      Package    -    PyGT |
-      Version    -    2.0.0.0 |
-      Brief      -    Python GUI toolkit package |
-      Created    -    January 2, 2025 |
+      Package   -    **PyGT** |
+      Version   -    **2.0.0.0** |
+      Brief     -    **Python GUI toolkit package** |
+      Created   -    **January 2, 2025** |
 
 
-     ISJTB-PY-XP-20250102-P000003
+     *ISJTB-PY-XP-20250102-P000003*
 """
 
 
