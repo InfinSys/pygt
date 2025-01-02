@@ -31,10 +31,9 @@
 
      *ISJTB-PY-XS-20250102-P000003*
 
-      Package   -    **PyGT** |
-      Version   -    **2.0.0.0** |
-      Brief     -    **Python GUI toolkit package** |
-      Created   -    **January 2, 2025**
+      Package   :    **PyGT** |
+      Version   :    **2.0.0.0** |
+      Created   :    **01/02/2025**
 """
 
 
