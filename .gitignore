@@ -1,0 +1,8 @@
+
+# Ignore IDE project directories
+/.vs
+/.vscode
+/.idea
+
+# Ignore all Python cache files
+*.pyc
