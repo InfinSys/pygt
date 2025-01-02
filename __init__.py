@@ -32,8 +32,7 @@
       Package   -    **PyGT** |
       Version   -    **2.0.0.0** |
       Brief     -    **Python GUI toolkit package** |
-      Created   -    **January 2, 2025** |
-
+      Created   -    **January 2, 2025**
 
      *ISJTB-PY-XP-20250102-P000003*
 """
