@@ -29,11 +29,17 @@
      ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
      DEALINGS IN THE SOFTWARE.
 
-     *ISJTB-PY-XS-20250102-P000003*
+     Required Packages:
+     ------------------
+
+     - **tcl/tkinter**
+     - **screeninfo**
 
       Package   :    **PyGT** |
       Version   :    **2.0.0.0** |
       Created   :    **01/02/2025**
+
+      **UUID** <*ISJTB-PY-XS-20250102-P000003*>
 """
 
 
