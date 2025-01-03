@@ -51,7 +51,6 @@ if __name__ == "__main__":
     print("\n| Dev Script |\n")
 
     window: AppWindow = AppWindow(width=300, height=200)
-    test_window_controller(window)
     window.mainloop()
 
     print("\n| Complete |")
