@@ -4,6 +4,7 @@
 
 #   EXTERNAL IMPORTS
 from tkinter import Tk
+from math import gcd as greatest_common_divisor
 
 
 #   INTERNAL IMPORTS
@@ -142,6 +143,12 @@ class WindowController:
     def display_resolution(self) -> tuple[int, int]:
         """ Returns resolution of display window is located on. """
         return win32_get_display_dimensions()[self.display_name()]
+
+    def display_aspect_ratio(self) -> tuple[int, int]:
+        """ Returns aspect ratio of display window is located on. """
+        display_width, display_height = self.display_resolution()
+        gcd: int = greatest_common_divisor(display_width, display_height)
+        return display_width//gcd, display_height//gcd
 
     def spanning_displays(self) -> list[str]:
         """ Returns list of display names window is partially on. """
