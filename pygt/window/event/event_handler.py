@@ -11,7 +11,13 @@ from tkinter import Event
 pass
 
 
+#   GLOBAL DEFINITIONS
+pass
+
+
+#   CLASSES
 class WindowEventHandler:
+    """ Application window instance event handler. """
     def __init__(self, bind_func, schedule_func) -> None:
         self.__bind_call = bind_func if callable(bind_func) else None
         self.__schedule_call = schedule_func if callable(schedule_func) else None
