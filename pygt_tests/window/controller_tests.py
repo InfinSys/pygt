@@ -5,7 +5,7 @@ Python GUI Toolkit Live Window Controller Tests
 
 
 #   EXTERNAL IMPORTS
-from tkinter import Tk
+pass
 
 
 #   INTERNAL IMPORTS
@@ -32,10 +32,9 @@ def __build_live_controller_test_commands(instance: AppWindow) -> None:
     cmd_delay = __add_lctc(func=lambda: instance.control.disable_native_controls(), delay=cmd_delay)
     cmd_delay = __add_lctc(func=lambda: instance.control.center_on_display(), delay=cmd_delay)
     cmd_delay = __add_lctc(func=lambda: instance.control.enable_native_controls(), delay=cmd_delay)
-    cmd_delay = __add_lctc(func=lambda: instance.control.maximize(), delay=cmd_delay)
     cmd_delay = __add_lctc(func=lambda: instance.control.minimize(), delay=cmd_delay)
     cmd_delay = __add_lctc(func=lambda: instance.control.restore_down(), delay=cmd_delay)
-    cmd_delay = __add_lctc(func=lambda: instance.control.restore_down(), delay=cmd_delay)
+    cmd_delay = __add_lctc(func=lambda: instance.control.set_size(width=500, height=500), delay=cmd_delay)
     cmd_delay = __add_lctc(func=lambda: instance.control.center_on_display(), delay=cmd_delay)
     cmd_delay = __add_lctc(func=lambda: instance.control.set_scale(.5, (16, 9)), delay=cmd_delay)
     cmd_delay = __add_lctc(func=lambda: instance.control.center_on_display(), delay=cmd_delay)
