@@ -40,9 +40,7 @@ class AppWindow(tk.Tk):
             schedule_func=self.after
         )
 
-        self.__service_broker: WindowServiceBroker = WindowServiceBroker(
-            instance_hash=self.__key()
-        )
+        self.__service_broker: WindowServiceBroker = WindowServiceBroker()
 
         self.__publish_control_services()
         self.__publish_event_services()
@@ -124,7 +122,7 @@ class AppWindow(tk.Tk):
         }
 
         for service, func in services.items():
-            self.service.new_service(name=service, service=ServiceEndpoint(func=func))
+            self.service.new(identifier=service, service=ServiceEndpoint(func=func))
 
     def __publish_event_services(self) -> None:
         services: dict[str, any] = {
@@ -134,7 +132,7 @@ class AppWindow(tk.Tk):
         }
 
         for service, func in services.items():
-            self.service.new_service(name=service, service=ServiceEndpoint(func=func))
+            self.service.new(identifier=service, service=ServiceEndpoint(func=func))
 
     def __publish_view_services(self) -> None:
         services: dict[str, any] = {
@@ -148,7 +146,7 @@ class AppWindow(tk.Tk):
         }
 
         for service, func in services.items():
-            self.service.new_service(name=service, service=ServiceEndpoint(func=func))
+            self.service.new(identifier=service, service=ServiceEndpoint(func=func))
 
     def __key(self) -> int:
         return self.__hash__() + self.winfo_id()
