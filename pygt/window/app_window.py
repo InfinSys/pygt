@@ -11,6 +11,8 @@ from pygt.window.controller import WindowController
 from pygt.window.event import WindowEventHandler
 from pygt.window.service import WindowServiceBroker, ServiceEndpoint, \
     CoreSvcKeys
+from pygt.window.window_view.view_apparatus import WindowViewApparatus
+
 #from pygt.window.window_view import WindowViewApparatus
 
 
@@ -58,6 +60,10 @@ class AppWindow(tk.Tk):
 
         # Subwindow Dispatcher
 
+        self.__publish_view_apparatus_services()
+        self.__publish_subwindow_dispatcher_services()
+        ...
+
         self.__exit_prerequisites: list[ServiceEndpoint] = []
 
         #self.__publish_view_services()
@@ -78,6 +84,18 @@ class AppWindow(tk.Tk):
     #@property
     #def view(self) -> WindowViewApparatus:
     #    return self.__view_apparatus
+
+    def controller(self) -> WindowController:
+        """ Returns window controller. """
+        return self.__controller
+
+    def view_apparatus(self) -> WindowViewApparatus:
+        """ Returns window view apparatus. """
+        pass
+
+    def event_handler(self) -> WindowEventHandler:
+        """ Returns window event handler. """
+        return self.__event_handler
 
     def service_broker(self) -> WindowServiceBroker:
         return self.__service_broker
@@ -108,6 +126,22 @@ class AppWindow(tk.Tk):
         """ Commit window event handler services to
         global window service endpoints.  """
         services: dict[str, any] = self.__get_event_handler_services_definition()
+
+        for service_key, func in services.items():
+            self.service.new(identifier=service_key, service=ServiceEndpoint(func=func))
+
+    def __publish_view_apparatus_services(self) -> None:
+        """ Commit window view apparatus services
+        to global window service endpoints.  """
+        services: dict[str, any] = {}
+
+        for service_key, func in services.items():
+            self.service.new(identifier=service_key, service=ServiceEndpoint(func=func))
+
+    def __publish_subwindow_dispatcher_services(self) -> None:
+        """ Commit window subwindow dispatcher services
+        to global window service endpoints.  """
+        services: dict[str, any] = {}
 
         for service_key, func in services.items():
             self.service.new(identifier=service_key, service=ServiceEndpoint(func=func))
@@ -168,14 +202,16 @@ class AppWindow(tk.Tk):
             CoreSvcKeys.SCHEDULE: self.event.schedule,
         }
 
+    def __get_view_apparatus_services_definition(self) -> dict[str, any]:
+        """ Returns window view apparatus bound services. """
+        pass
+
+    def __get_subwindow_dispatcher_services_definition(self) -> dict[str, any]:
+        """ Returns subwindow dispatcher bound services. """
+        pass
+
     def __configure(self) -> None:
         self.protocol("WM_DELETE_WINDOW", self.window_exit)
-
-    def __publish_view_services(self) -> None:
-        services: dict[str, any] = {}
-
-        for service, func in services.items():
-            self.service.new(identifier=service, service=ServiceEndpoint(func=func))
 
     def __key(self) -> int:
         return self.__hash__() + self.winfo_id()
