@@ -2,6 +2,7 @@
 """ Window Services Keys """
 
 
+#   Window Controller Service Keys
 WINDOW_WIDTH: str = "window_width"
 WINDOW_HEIGHT: str = "window_height"
 WINDOW_X: str = "window_x"
@@ -38,9 +39,20 @@ HIDE_WINDOW: str = "hide_window"
 SHOW_WINDOW: str = "show_window"
 ENABLE_NATIVE_WINDOW: str = "enable_native_window"
 DISABLE_NATIVE_WINDOW: str = "disable_native_window"
+
+#   Window Event Handler Service Keys
+WINDOW_BOUND_SEQUENCES: str = "window_bound_sequences"  # NEW
+WINDOW_FORWARD_SEQUENCES: str = "window_forward_sequences"  # NEW
+WINDOW_BINDINGS: str = "window_bindings"  # NEW
+WINDOW_FORWARD_BINDINGS: str = "window_forward_bindings"  # NEW
+WINDOW_BINDING_DEFINITION: str = "window_bind_definition"  # NEW
+GET_WINDOW_BINDING: str = "get_window_binding"  # NEW
 BIND_TO_WINDOW: str = "bind_to_window"
+WINDOW_HAS_BINDING: str = "window_has_bind"  # NEW
 FORWARD_WINDOW_BIND: str = "forward_window_bind"
 SCHEDULE: str = "schedule"
+
+#   N/A
 WINDOW_VIEW_IS_ENABLED: str = "window_view_is_enabled"
 ENABLE_WINDOW_VIEW: str = "enable_window_view"
 DISABLE_WINDOW_VIEW: str = "disable_window_view"

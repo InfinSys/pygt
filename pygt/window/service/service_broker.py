@@ -3,7 +3,7 @@
 
 
 #   EXTERNAL IMPORTS
-from pygt.window.window_service import WindowService
+from pygt.window.service import WindowService
 
 
 class WindowServiceBroker:
