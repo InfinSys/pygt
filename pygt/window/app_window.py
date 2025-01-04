@@ -11,7 +11,7 @@ from pygt.window.controller import WindowController
 from pygt.window.event import WindowEventHandler
 from pygt.window.service import WindowServiceBroker, ServiceEndpoint
 #from pygt.window.window_view import WindowViewApparatus
-import pygt.window.service.service_keys as SvcKey
+import pygt.window.service.keys as SvcKey
 
 
 # Application DPI awareness
