@@ -3,7 +3,6 @@
 
 
 #   EXTERNAL IMPORTS
-import tkinter as tk
 from tkinter import Event
 
 
