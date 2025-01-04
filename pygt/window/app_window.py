@@ -9,7 +9,7 @@ import tkinter as tk
 #   INTERNAL IMPORTS
 from pygt.window.controller import WindowController
 from pygt.window.event import WindowEventHandler
-from pygt.window.service import WindowServiceBroker, WindowService
+from pygt.window.service import WindowServiceBroker, ServiceEndpoint
 #from pygt.window.window_view import WindowViewApparatus
 import pygt.window.service.service_keys as SvcKey
 
@@ -55,7 +55,7 @@ class AppWindow(tk.Tk):
 
         # Subwindow Dispatcher
 
-        self.__exit_prerequisites: list[WindowService] = []
+        self.__exit_prerequisites: list[ServiceEndpoint] = []
 
         #self.__publish_view_services()
         self.__configure()
@@ -80,7 +80,7 @@ class AppWindow(tk.Tk):
         return self.__service_broker
 
     def add_window_exit_prerequisite(self, func, **func_args) -> None:
-        self.__exit_prerequisites.append(WindowService(func, **func_args))
+        self.__exit_prerequisites.append(ServiceEndpoint(func, **func_args))
 
     def window_exit(self, prereq_override: bool = False) -> None:
         if prereq_override is False:
@@ -124,7 +124,7 @@ class AppWindow(tk.Tk):
         }
 
         for service, func in services.items():
-            self.service.new_service(name=service, service=WindowService(func=func))
+            self.service.new_service(name=service, service=ServiceEndpoint(func=func))
 
     def __publish_event_services(self) -> None:
         services: dict[str, any] = {
@@ -134,7 +134,7 @@ class AppWindow(tk.Tk):
         }
 
         for service, func in services.items():
-            self.service.new_service(name=service, service=WindowService(func=func))
+            self.service.new_service(name=service, service=ServiceEndpoint(func=func))
 
     def __publish_view_services(self) -> None:
         services: dict[str, any] = {
@@ -148,7 +148,7 @@ class AppWindow(tk.Tk):
         }
 
         for service, func in services.items():
-            self.service.new_service(name=service, service=WindowService(func=func))
+            self.service.new_service(name=service, service=ServiceEndpoint(func=func))
 
     def __key(self) -> int:
         return self.__hash__() + self.winfo_id()
