@@ -1,7 +1,8 @@
 
 """
-    Window View Apparatus Package
+Window View Apparatus Package
 """
 
 
-from window.window_view.view_apparatus import WindowViewApparatus
+#   EXTENDED SYMBOLS
+from .view_apparatus import WindowViewApparatus
