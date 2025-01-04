@@ -12,9 +12,8 @@ from view.view_controller import ViewController
 
 
 class WindowViewApparatus:
-    def __init__(self, window: Tk, instance_hash: int, service) -> None:
+    def __init__(self, window: Tk, service) -> None:
         self.__tk: Tk = window if issubclass(type(window), Tk) else None
-        self.__owner_hash: int = instance_hash if type(instance_hash) is int else None
         self.__service_call = service if callable(service) else None
         self.__viewports: dict[str, tuple[bool, Viewport]] = {}
         self.__current_viewport: str = None
