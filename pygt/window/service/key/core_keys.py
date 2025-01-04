@@ -7,52 +7,54 @@ WINDOW_WIDTH: str = "window_width"
 WINDOW_HEIGHT: str = "window_height"
 WINDOW_X: str = "window_x"
 WINDOW_Y: str = "window_y"
-WINDOW_COORD: str = "window_coord"  # NEW
+WINDOW_COORD: str = "window_coord"
 WINDOW_VERTICES: str = "window_vertices"
 WINDOW_BOUNDS: str = "window_bounds"
 WINDOW_IS_WITHIN: str = "window_is_within"
 WINDOW_IS_PARTLY_WITHIN: str = "window_is_partly_within"
-WINDOW_DISPLAY_OCCUP: str = "window_occup"  # NEW
+WINDOW_DISPLAY_OCCUP: str = "window_occup"
 WINDOW_IS_MINIMIZED: str = "window_is_minimized"
-WINDOW_IS_FULLSCREEN: str = "window_is_fullscreen"  # NEW
+WINDOW_IS_FULLSCREEN: str = "window_is_fullscreen"
 WINDOW_IS_MAXIMIZED: str = "window_is_maximized"
 WINDOW_IS_ON_SCREEN: str = "window_is_on_screen"
 WINDOW_IS_BORDERLESS: str = "window_has_natives"
 DISPLAY_NAME: str = "display_name"
 DISPLAY_RESOLUTION: str = "display_resolution"
-DISPLAY_ASPECT_RATIO: str = "display_aspect"  # NEW
+DISPLAY_ASPECT_RATIO: str = "display_aspect"
 SPANNING_DISPLAYS: str = "spanning_displays"
 WINDOW_REL_MOUSE_X: str = "window_rel_mouse_x"
 WINDOW_REL_MOUSE_Y: str = "window_rel_mouse_y"
-WINDOW_REL_MOUSE_COORD: str = "window_rel_mouse"  # NEW
+WINDOW_REL_MOUSE_COORD: str = "window_rel_mouse"
 WINDOW_HAS_MOUSE: str = "window_has_mouse"
 SET_WINDOW_TITLE: str = "set_window_title"
 CENTER_WINDOW: str = "center_window"
-WINDOW_TO_DISPLAY: str = "window_to_display"  # NEW
-FULLSCREEN_WINDOW: str = "fullscreen_window"  # NEW
-FULLSCREEN_WINDOW_EXIT: str = "exit_fullscreen_window"  # NEW
+WINDOW_TO_DISPLAY: str = "window_to_display"
+FULLSCREEN_WINDOW: str = "fullscreen_window"
+FULLSCREEN_WINDOW_EXIT: str = "exit_fullscreen_window"
 MAXIMIZE_WINDOW: str = "maximize_window"
 RESTORE_WINDOW: str = "restore_window"
 MINIMIZE_WINDOW: str = "minimize_window"
-WINDOW_EXIT: str = "close_window"  # NEW
+WINDOW_EXIT: str = "close_window"
 HIDE_WINDOW: str = "hide_window"
 SHOW_WINDOW: str = "show_window"
 ENABLE_NATIVE_WINDOW: str = "enable_native_window"
 DISABLE_NATIVE_WINDOW: str = "disable_native_window"
 
+
 #   Window Event Handler Service Keys
-WINDOW_BOUND_SEQUENCES: str = "window_bound_sequences"  # NEW
-WINDOW_FORWARD_SEQUENCES: str = "window_forward_sequences"  # NEW
-WINDOW_BINDINGS: str = "window_bindings"  # NEW
-WINDOW_FORWARD_BINDINGS: str = "window_forward_bindings"  # NEW
-WINDOW_BINDING_DEFINITION: str = "window_bind_definition"  # NEW
-GET_WINDOW_BINDING: str = "get_window_binding"  # NEW
+WINDOW_BOUND_SEQUENCES: str = "window_bound_sequences"
+WINDOW_FORWARD_SEQUENCES: str = "window_forward_sequences"
+WINDOW_BINDINGS: str = "window_bindings"
+WINDOW_FORWARD_BINDINGS: str = "window_forward_bindings"
+WINDOW_BINDING_DEFINITION: str = "window_bind_definition"
+GET_WINDOW_BINDING: str = "get_window_binding"
 BIND_TO_WINDOW: str = "bind_to_window"
-WINDOW_HAS_BINDING: str = "window_has_bind"  # NEW
+WINDOW_HAS_BINDING: str = "window_has_bind"
 FORWARD_WINDOW_BIND: str = "forward_window_bind"
 SCHEDULE: str = "schedule"
 
-#   N/A
+
+#   Window View Apparatus Service Keys
 WINDOW_VIEW_IS_ENABLED: str = "window_view_is_enabled"
 ENABLE_WINDOW_VIEW: str = "enable_window_view"
 DISABLE_WINDOW_VIEW: str = "disable_window_view"
