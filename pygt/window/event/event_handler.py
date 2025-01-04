@@ -1,5 +1,5 @@
 
-""" Application Window Event Handler """
+""" Application Window Instance Event Handler """
 
 
 #   EXTERNAL IMPORTS
