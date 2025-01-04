@@ -53,6 +53,8 @@ class AppWindow(tk.Tk):
         #    service=self.service_broker
         #)
 
+        # Subwindow Dispatcher
+
         self.__exit_prerequisites: list[WindowService] = []
 
         #self.__publish_view_services()
@@ -127,7 +129,7 @@ class AppWindow(tk.Tk):
     def __publish_event_services(self) -> None:
         services: dict[str, any] = {
             SvcKey.BIND_TO_WINDOW: self.event.bind,
-            SvcKey.FORWARD_WINDOW_BIND: self.event.forward_binding,
+            SvcKey.FORWARD_WINDOW_BIND: self.event.forward,
             SvcKey.SCHEDULE: self.event.schedule
         }
 
