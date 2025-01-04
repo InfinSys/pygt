@@ -35,3 +35,7 @@ class ServiceEndpoint:
             return self.__func(**self.__args)
         else:
             return self.__func(**override_args)
+
+    def __call__(self, *args, **kwargs) -> any:
+        """ Execute endpoint. """
+        self.__func(*args, **kwargs)
