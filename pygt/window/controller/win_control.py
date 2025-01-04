@@ -6,13 +6,14 @@
 from tkinter import Tk
 from math import gcd as greatest_common_divisor
 
-from pygt.model.geometric import GeoBounds
+
 #   INTERNAL IMPORTS
 from pygt.utility.platform import get_windows_version,  \
     win32_get_display_bounds, win32_get_display_bounding_boxes, \
     win32_get_display_dimensions, win32_get_display_coordinates
 from pygt.utility.geometric import is_intersecting_bounds, \
     find_intersect_bounds
+from pygt.model.geometric import GeoBounds
 
 
 #   GLOBAL DEFINITIONS
