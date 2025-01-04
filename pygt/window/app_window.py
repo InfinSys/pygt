@@ -11,9 +11,7 @@ from pygt.window.controller import WindowController
 from pygt.window.event import WindowEventHandler
 from pygt.window.service import WindowServiceBroker, ServiceEndpoint, \
     CoreSvcKeys
-from pygt.window.window_view.view_apparatus import WindowViewApparatus
-
-#from pygt.window.window_view import WindowViewApparatus
+#from pygt.window.view import WindowViewApparatus
 
 
 #   GLOBAL DEFINITIONS
@@ -89,9 +87,9 @@ class AppWindow(tk.Tk):
         """ Returns window controller. """
         return self.__controller
 
-    def view_apparatus(self) -> WindowViewApparatus:
-        """ Returns window view apparatus. """
-        pass
+    #def view_apparatus(self) -> WindowViewApparatus:
+    #    """ Returns window view apparatus. """
+    #    pass
 
     def event_handler(self) -> WindowEventHandler:
         """ Returns window event handler. """
