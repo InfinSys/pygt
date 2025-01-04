@@ -6,11 +6,13 @@
 from tkinter import Tk
 from math import gcd as greatest_common_divisor
 
-
+from pygt.model.geometric import GeoBounds
 #   INTERNAL IMPORTS
 from pygt.utility.platform import get_windows_version,  \
     win32_get_display_bounds, win32_get_display_bounding_boxes, \
     win32_get_display_dimensions, win32_get_display_coordinates
+from pygt.utility.geometric import is_intersecting_bounds, \
+    find_intersect_bounds
 
 
 #   GLOBAL DEFINITIONS
@@ -29,6 +31,7 @@ class WindowController:
         self.__min_width: int = width if width is not None else DEFAULT_WINDOW_WIDTH
         self.__min_height: int = height if height is not None else DEFAULT_WINDOW_HEIGHT
         self.__is_borderless: bool = False
+        self.__is_fullscreen: bool = False
 
         for config_func in [self.__tk.config, self.__tk.minsize]:
             config_func(width=self.__min_width, height=self.__min_height)
@@ -55,12 +58,12 @@ class WindowController:
         """ Returns window on-display y-coordinate. """
         return self.__tk.winfo_y()
 
-    def position(self) -> tuple[int, int]:
+    def coord(self) -> tuple[int, int]:
         """ Returns coordinate of window anchor point. """
         return self.x_coord(), self.y_coord()
 
-    def bounds(self) -> dict:
-        """ Returns coordinates of all four corners of window. """
+    def vertices(self) -> dict:
+        """ Returns coordinates of all four window corners. """
         return {
             'lt': (self.x_coord(), self.y_coord()),
             'lb': (self.x_coord(), (self.y_coord() + self.height())),
@@ -68,77 +71,89 @@ class WindowController:
             'rt': ((self.x_coord() + self.width()), self.y_coord())
         }
 
-    def bounds_box(self) -> tuple[tuple[int, int], tuple[int, int]]:
+    def bounds(self) -> GeoBounds:
         """ Returns two-point bounds coordinates of window position. """
-        return (self.x_coord(), self.y_coord()), ((self.x_coord() + self.width()), (self.y_coord() + self.height()))
+        return GeoBounds(
+            x_min=self.x_coord(),
+            y_min=self.y_coord(),
+            x_max=(self.x_coord() + self.width()),
+            y_max=(self.y_coord() + self.height())
+        )
 
-    def is_within_bounds(self, bounds: dict[str, tuple[int, int]]) -> bool:
-        """ Returns true if window is within provided bounds. """
-        win_bounds: dict[str, tuple[int, int]] = self.bounds()
+    def is_within(self, bounds: GeoBounds) -> bool:
+        """ Returns true if window is entirely within provided bounds. """
+        window_bounds: GeoBounds = self.bounds()
 
-        if (win_bounds['lt'][0] < bounds['lt'][0]) or (win_bounds['lt'][1] < bounds['lt'][1]):
+        if (window_bounds.x_left < bounds.x_left) or (window_bounds.x_right > bounds.x_right):
             return False
 
-        if (win_bounds['rb'][0] > bounds['rb'][0]) or (win_bounds['rb'][1] > bounds['rb'][1]):
-            return False
+        return not ((window_bounds.y_top < bounds.y_top) or (window_bounds.y_bottom > bounds.y_bottom))
 
-        return True
+    def is_partly_within(self, bounds: GeoBounds) -> bool:
+        """ Returns true if any part of window is within provided bounds. """
+        return is_intersecting_bounds(b1=self.bounds(), b2=bounds)
 
-    def is_within(self, bbox: tuple[tuple[int, int], tuple[int, int]]) -> bool:
-        """ Returns true if window is within provided bounds box. """
-        bounds: tuple[tuple[int, int], tuple[int, int]] = self.bounds_box()
+    def display_occupation(self, display: str) -> float:
+        """ Returns percentage of window occupying display. """
+        if (display is None) or (display.strip() == ""):
+            return .0
 
-        if (bounds[0][0] < bbox[0][0]) or (bounds[0][1] < bbox[0][1]):
-            return False
-        elif (bounds[1][0] > bbox[1][0]) or (bounds[1][1] > bbox[1][1]):
-            return False
+        (x_min, y_min), (x_max, y_max) = win32_get_display_bounding_boxes()[display]
+        display_bounds: GeoBounds = GeoBounds(x_min=x_min, y_min=y_min, x_max=x_max, y_max=y_max)
+        window_bounds: GeoBounds = self.bounds()
 
-        return True
+        if not is_intersecting_bounds(b1=display_bounds, b2=window_bounds):
+            return .0
 
-    def is_partially_within(self, bbox: tuple[tuple[int, int], tuple[int, int]]) -> bool:
-        """ Returns true if window is at least
-        partially within provided bounds box. """
-        bounds: tuple[tuple[int, int], tuple[int, int]] = self.bounds_box()
+        intersect_bounds: GeoBounds = find_intersect_bounds(b1=display_bounds, b2=window_bounds)
 
-        if (bounds[1][0] < bbox[0][0]) or (bounds[0][0] > bbox[1][0]):
-            return False
-        elif (bounds[1][1] < bbox[0][1]) or (bounds[0][1] > bbox[1][1]):
-            return False
+        window_area: int = (
+            (window_bounds.x_right - window_bounds.x_left) * (window_bounds.y_bottom - window_bounds.y_top)
+        )
+        overlap_area: int = (
+            (intersect_bounds.x_right - intersect_bounds.x_left) * (intersect_bounds.y_bottom - intersect_bounds.y_top)
+        )
 
-        return True
+        return (overlap_area / window_area) * 100
 
     def is_minimized(self) -> bool:
         """ Returns true if window is minimized. """
         return self.__tk.state() == "iconic"
+
+    def is_fullscreen(self) -> bool:
+        """ Returns true if window is in fullscreen mode. """
+        return self.__is_fullscreen
 
     def is_maximized(self) -> bool:
         """ Returns true if window is maximized. """
         return self.__tk.state() == "zoomed"
 
     def is_on_screen(self) -> bool:
-        """ Returns true if window is visible on display. """
+        """ Returns true if window is positioned on any display. """
         if self.__tk.state() == "iconic":
             return False
 
-        display_bbox: dict[str, tuple[tuple[int, int], tuple[int, int]]] = win32_get_display_bounding_boxes()
+        displays: dict[str, tuple[tuple[int, int], tuple[int, int]]] = win32_get_display_bounding_boxes()
 
-        for name, bbox in display_bbox.items():
-            if self.is_partially_within(bbox):
+        for display, bounds in displays.items():
+            if self.is_partly_within(GeoBounds(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1])):
                 return True
 
         return False
 
+    def is_borderless(self) -> bool:
+        """ Returns true if window contains
+        no native windowing system controls. """
+        return self.__is_borderless
+
     def display_name(self) -> str:
         """ Returns name of display window is located on. """
-        displays: dict[str, tuple[tuple[int, int], tuple[int, int]]] = win32_get_display_bounding_boxes()
+        occup_map: dict[str, float] = {}
 
-        for name, bounds in displays.items():
-            if self.is_within(bounds):
-                return name
+        for name, _ in win32_get_display_bounding_boxes().items():
+            occup_map[name] = self.display_occupation(display=name)
 
-        for name, bounds in displays.items():
-            if self.is_partially_within(bounds):
-                return name
+        return max(occup_map, key=occup_map.get)
 
     def display_resolution(self) -> tuple[int, int]:
         """ Returns resolution of display window is located on. """
@@ -152,19 +167,17 @@ class WindowController:
 
     def spanning_displays(self) -> list[str]:
         """ Returns list of display names window is partially on. """
-        displays: list[str] = []
-        dimensions: dict[str, tuple[tuple[int, int], tuple[int, int]]] = win32_get_display_bounding_boxes()
+        if self.is_maximized() or self.is_fullscreen():
+            return [self.display_name(),]
 
-        for name, bounds in dimensions.items():
-            if self.is_partially_within(bounds):
-                displays.append(name)
+        displays: dict[str, tuple[tuple[int, int], tuple[int, int]]] = win32_get_display_bounding_boxes()
+        spanning: list[str] = []
 
-        return displays
+        for display, bounds in displays.items():
+            if self.is_partly_within(GeoBounds(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1])):
+                spanning.append(display)
 
-    def is_borderless(self) -> bool:
-        """ Returns true if window contains
-        no windowing system controls. """
-        return self.__is_borderless
+        return spanning
 
     def rel_mouse_x_coord(self) -> int:
         """ Returns mouse x-coordinate relative to window. """
@@ -229,7 +242,7 @@ class WindowController:
 
     def set_scale(self, scale: float, aspect: tuple[int, int] = None) -> None:
         """ Set window size. """
-        new_size: tuple[int, int] = self.__calculate_ratio_size(scale, aspect)
+        new_size: tuple[int, int] = self.__calculate_ratio_size(scale=scale, aspect=aspect)
         self.set_size(width=new_size[0], height=new_size[1])
 
     def set_position(self, x_coord: int, y_coord: int) -> None:
@@ -282,6 +295,33 @@ class WindowController:
             center_y -= int(self.height() / 2)
 
         self.set_position(center_x, center_y)
+
+    def send_to_display(self, display: str, rel_x_coord: int = None, rel_y_coord: int = None) -> None:
+        """ Send window to provided display. """
+        if (rel_x_coord is None) and (rel_y_coord is None):
+            return self.center_on_display(display=display)
+
+        rel_x_coord = 0 if rel_x_coord is None else rel_x_coord
+        rel_y_coord = 0 if rel_y_coord is None else rel_y_coord
+
+        display_x_left, display_y_top = win32_get_display_coordinates()[display]
+
+        self.set_position(
+            x_coord=(display_x_left + rel_x_coord),
+            y_coord=(display_y_top + rel_y_coord)
+        )
+
+    def enter_fullscreen(self) -> None:
+        """ Enter fullscreen mode. """
+        if not self.__is_fullscreen:
+            self.__tk.attributes("-fullscreen", True)
+            self.__is_fullscreen = True
+
+    def exit_fullscreen(self) -> None:
+        """ Exit fullscreen mode. """
+        if self.__is_fullscreen:
+            self.__tk.attributes("-fullscreen", False)
+            self.__is_fullscreen = False
 
     def maximize(self) -> None:
         """ Maximize window. """
