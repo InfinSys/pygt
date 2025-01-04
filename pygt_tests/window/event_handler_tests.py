@@ -13,7 +13,7 @@ pass
 
 
 #   PACKAGE IMPORTS
-from pygt.window import AppWindow
+from pygt.window import Window
 
 
 #   GLOBAL DEFINITIONS
@@ -26,7 +26,7 @@ def __test_forward_function(event: Event) -> None:
 
 
 #   TEST FUNCTIONS
-def interactive_window_event_handler_test(instance: AppWindow) -> None:
+def interactive_window_event_handler_test(instance: Window) -> None:
     """
     Interact with window event handler in mainloop.
 

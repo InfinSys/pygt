@@ -29,7 +29,8 @@ except Exception:
 
 
 #   CLASSES
-class AppWindow(tk.Tk):
+class Window(tk.Tk):
+    """ Main application window base class. """
     def __init__(self, width: int = None, height: int = None) -> None:
         super().__init__()
 

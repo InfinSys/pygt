@@ -13,7 +13,7 @@ pass
 
 
 #   PACKAGE IMPORTS
-from pygt.window import AppWindow
+from pygt.window import Window
 
 
 #   GLOBAL DEFINITIONS
@@ -26,7 +26,7 @@ def __add_lctc(func, delay) -> int:
     return delay + 700
 
 
-def __build_live_controller_test_commands(instance: AppWindow) -> None:
+def __build_live_controller_test_commands(instance: Window) -> None:
     LIVE_CONTROLLER_TEST_COMMANDS.clear()
     cmd_delay: int = 3000
     cmd_delay = __add_lctc(func=lambda: instance.control.disable_native_controls(), delay=cmd_delay)
@@ -78,7 +78,7 @@ def __build_live_controller_test_commands(instance: AppWindow) -> None:
 
 
 #   TEST FUNCTIONS
-def live_window_controller_test(instance: AppWindow) -> None:
+def live_window_controller_test(instance: Window) -> None:
     """
     Test window controller while in mainloop.
 

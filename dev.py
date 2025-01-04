@@ -1,14 +1,14 @@
 
 #   IMPORTS
 import pygt
-from pygt.window import AppWindow
+from pygt.window import Window
 from pygt_tests import WindowTests
 
 
 if __name__ == "__main__":
     print("\n| Dev Script |\n")
 
-    window: AppWindow = AppWindow(width=300, height=200)
+    window: Window = Window(width=300, height=200)
 
     #window.event.bind(
     #    sequence="Button-1",
