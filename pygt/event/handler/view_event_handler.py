@@ -1,5 +1,5 @@
 
-""" Application Window Instance Event Handler """
+""" Application View Event Handler """
 
 
 #   EXTERNAL IMPORTS
@@ -15,16 +15,16 @@ pass
 
 
 #   CLASSES
-class WindowEventHandler:
-    """ Application window instance event handler. """
-    def __init__(self, bind_func, schedule_func) -> None:
-        self.__bind_call = bind_func if callable(bind_func) else None
-        self.__schedule_call = schedule_func if callable(schedule_func) else None
+class ViewEventHandler:
+    """ Application view event handler. """
+    def __init__(self, bind_call, schedule_call) -> None:
+        self.__bind_call = bind_call if callable(bind_call) else None
+        self.__schedule_call = schedule_call if callable(schedule_call) else None
         self.__bindings: dict[str, dict[str, any]] = {}
         self.__binding_subs: dict[str, list[dict[str, any]]] = {}
 
     def bound_sequences(self) -> list[str]:
-        """ Returns list of sequences window is bound to. """
+        """ Returns list of sequences view is bound to. """
         return [sequence for sequence in self.__bindings.keys()]
 
     def forwarded_sequences(self) -> list[str]:
@@ -85,7 +85,7 @@ class WindowEventHandler:
         return None
 
     def bind(self, sequence: str, cmd, identifier: str = None, **extra) -> bool:
-        """ Bind event to window. """
+        """ Bind event to view. """
         if (identifier is None) or (identifier.strip() == ""):
             identifier = "not_sure_yet"
 
@@ -121,7 +121,7 @@ class WindowEventHandler:
         return True
 
     def forward(self, sequence: str, func, **call_args) -> bool:
-        """ Forward window event on occurrence to provided function. """
+        """ Forward view event on occurrence to provided function. """
         sequence = self.__format_sequence_str(sequence)
 
         if not self.is_existing_definition(sequence):
