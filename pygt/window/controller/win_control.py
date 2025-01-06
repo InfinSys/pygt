@@ -63,7 +63,7 @@ class WindowController:
         """ Returns coordinate of window anchor point. """
         return self.x_coord(), self.y_coord()
 
-    def vertices(self) -> dict:
+    def vertices(self) -> dict[str, tuple[int, int]]:
         """ Returns coordinates of all four window corners. """
         return {
             'lt': (self.x_coord(), self.y_coord()),
@@ -131,7 +131,7 @@ class WindowController:
 
     def is_on_screen(self) -> bool:
         """ Returns true if window is positioned on any display. """
-        if self.__tk.state() == "iconic":
+        if self.is_minimized():
             return False
 
         displays: dict[str, tuple[tuple[int, int], tuple[int, int]]] = win32_get_display_bounding_boxes()
