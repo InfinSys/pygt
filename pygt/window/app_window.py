@@ -8,7 +8,7 @@ import tkinter as tk
 
 #   INTERNAL IMPORTS
 from pygt.window.controller import WindowController
-from pygt.window.event import WindowEventHandler
+from pygt.event.handler import ViewEventHandler
 from pygt.window.service import WindowServiceBroker, ServiceEndpoint, \
     CoreSvcKeys
 #from pygt.window.view import WindowViewApparatus
@@ -41,9 +41,9 @@ class Window(tk.Tk):
             height=height
         )
 
-        self.__event_handler: WindowEventHandler = WindowEventHandler(
-            bind_func=self.bind,
-            schedule_func=self.after
+        self.__event_handler: ViewEventHandler = ViewEventHandler(
+            bind_call=self.bind,
+            schedule_call=self.after
         )
 
         self.__service_broker: WindowServiceBroker = WindowServiceBroker()
@@ -73,7 +73,7 @@ class Window(tk.Tk):
         return self.__controller
 
     @property
-    def event(self) -> WindowEventHandler:
+    def event(self) -> ViewEventHandler:
         return self.__event_handler
 
     @property
@@ -92,7 +92,7 @@ class Window(tk.Tk):
     #    """ Returns window view apparatus. """
     #    pass
 
-    def event_handler(self) -> WindowEventHandler:
+    def event_handler(self) -> ViewEventHandler:
         """ Returns window event handler. """
         return self.__event_handler
 
