@@ -1,6 +1,6 @@
 
 #   IMPORTS
-import pygt
+import tkinter as tk
 from pygt.window import Window
 from pygt.view import Viewport, Page
 from pygt_tests import WindowTests
@@ -33,6 +33,28 @@ if __name__ == "__main__":
         cmd=lambda e: dev_page.control.set_scale(scale=.5, aspect=(2, 1))
     )
     dev_page.control.set_background(color="#df567e")
+
+    ## Place controls on new page
+    dev_page.widget.new(identifier="page_label", widget=tk.Label(master=dev_page, text="Developer Page"))
+    dev_page.widget.pack(identifier="page_label", side=tk.TOP, expand=True)
+    dev_page.widget.set_background_of(identifier="page_label", color="#df567e")
+    dev_page.widget.set_foreground_of(identifier="page_label", color="#ffffff")
+    dev_page.widget.new(identifier="switch_btn", widget=tk.Button(master=dev_page, text="Next", command=lambda: dev_viewport.view.switch('dev_page2')))
+    dev_page.widget.pack(identifier="switch_btn", side=tk.TOP, expand=True)
+
+    ## Attach another page to viewport
+    dev_viewport.view.attach(identifier="dev_page2", page_type=Page)
+    dev_page2: Page = dev_viewport.view.get_page(identifier="dev_page2")
+    dev_viewport.event.bind(
+        identifier="dev_page2_sizing",
+        sequence="Configure",
+        cmd=lambda e: dev_page2.control.set_scale(scale=.85, aspect=(2, 1))
+    )
+    dev_page2.control.set_background(color="#000000")
+    dev_page2.widget.new(identifier="page_label", widget=tk.Label(master=dev_page2, text="Developer Page 2"))
+    dev_page2.widget.pack(identifier="page_label", side=tk.TOP, expand=True)
+    dev_page2.widget.set_background_of(identifier="page_label", color="#000000")
+    dev_page2.widget.set_foreground_of(identifier="page_label", color="#ffffff")
 
     pass
 

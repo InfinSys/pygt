@@ -25,7 +25,8 @@ class WindowViewApparatus(ViewInterface):
             default_viewport_args={
                 'parent': self,
                 'service_call': service_call,
-            }
+            },
+            widget_manager=self.widget_manager()
         )
         self.__view_enabled: bool = True
         self.__configure_view()

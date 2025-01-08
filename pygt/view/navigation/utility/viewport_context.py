@@ -18,10 +18,11 @@ pass
 #   CLASSES
 class ViewportContext(ViewContext):
     """ Application viewport context. """
-    def __init__(self, viewport: Viewport, restrict: bool = False, **kwargs) -> None:
+    def __init__(self, viewport: Viewport, viewport_id: str, restrict: bool = False, **kwargs) -> None:
         super().__init__(
             view_type=Viewport,
             view=viewport,
+            view_id=viewport_id,
             restrict=restrict,
             **kwargs
         )

@@ -25,7 +25,8 @@ class Viewport(ViewInterface):
             default_page_args={
                 'viewport': self,
                 'service_call': service_call,
-            }
+            },
+            widget_manager=self.widget_manager()
         )
 
     @property

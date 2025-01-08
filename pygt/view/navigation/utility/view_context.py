@@ -8,6 +8,7 @@ pass
 
 #   INTERNAL IMPORTS
 from pygt.view.view_interface import ViewInterface
+from pygt.widget.utility.widget_manager import WidgetManager
 
 
 #   GLOBAL DEFINITIONS
@@ -17,7 +18,8 @@ pass
 #   CLASSES
 class ViewContext:
     """ Base application view context. """
-    def __init__(self, view_type: type, view: ViewInterface, restrict: bool = False, **kwargs) -> None:
+    def __init__(self, view_type: type, view: ViewInterface, view_id: str, restrict: bool = False, **kwargs) -> None:
+        self.__view_identifier: str = view_id
         self.__restrict_conditional: any = kwargs.get('condition', None)
         self.__restrict_view: bool = restrict if self.__restrict_conditional is not None else False
         self.__view: ViewInterface = view if issubclass(type(view), ViewInterface) else None
@@ -30,12 +32,15 @@ class ViewContext:
         self.__restrict_view = False
         return False
 
-    def show(self, **pack_args) -> bool:
+    def show(self, widget_manager: WidgetManager, view_arg: str, **pack_args) -> bool:
         """ Show view. """
         if self.is_restricted():
             return False
 
-        self.__view.pack(**pack_args)
+        widget_manager.pack(
+            identifier=f"{self.__view_identifier}_{view_arg}",
+            **pack_args
+        )
         return True
 
     def view(self) -> ViewInterface:

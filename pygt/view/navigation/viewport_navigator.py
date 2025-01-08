@@ -10,6 +10,7 @@ pass
 from .view_navigator import ViewNavigator
 from pygt.view import Viewport
 from pygt.view.navigation.utility.viewport_context import ViewportContext
+from pygt.widget.utility.widget_manager import WidgetManager
 
 
 #   GLOBAL DEFINITIONS
@@ -19,8 +20,11 @@ pass
 #   CLASSES
 class ViewportNavigator(ViewNavigator):
     """ Window viewport navigator. """
-    def __init__(self, default_viewport_args: dict[str, any]) -> None:
-        super().__init__(default_view_args=default_viewport_args)
+    def __init__(self, default_viewport_args: dict[str, any], widget_manager: WidgetManager) -> None:
+        super().__init__(
+            default_view_args=default_viewport_args,
+            widget_manager=widget_manager
+        )
 
     def viewports(self) -> list[str]:
         """ Returns list of viewport identifiers. """
@@ -81,7 +85,11 @@ class ViewportNavigator(ViewNavigator):
         if self.current_view() is not None:
             self.get_current_viewport().pack_forget()
 
-        self.get_viewport_context(viewport_id).show(**self.view_pack_args())
+        self.get_viewport_context(viewport_id).show(
+            widget_manager=self.view_widget_manager(),
+            view_arg="viewport",
+            **self.view_pack_args()
+        )
         self.update_view_info(current=viewport_id)
         return True
 

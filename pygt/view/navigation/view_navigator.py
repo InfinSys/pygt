@@ -8,6 +8,7 @@ from abc import ABC, abstractmethod
 
 #   INTERNAL IMPORTS
 from pygt.view.navigation.utility.view_context import ViewContext
+from pygt.widget.utility.widget_manager import WidgetManager
 
 
 #   GLOBAL DEFINITIONS
@@ -17,8 +18,9 @@ pass
 #   CLASSES
 class ViewNavigator(ABC):
     """ Base application view navigator. """
-    def __init__(self, default_view_args: dict[str, any], proxy_type: type = None) -> None:
+    def __init__(self, default_view_args: dict[str, any], widget_manager: WidgetManager, proxy_type: type = None) -> None:
         self.__default_view_args: dict[str, any] = default_view_args
+        self.__view_widget_manager: WidgetManager = widget_manager
         self.__views: dict[str, ViewContext] = {}
         self.__current_view: str = None
         self.__pack_args: dict[str, any] = {
@@ -48,6 +50,10 @@ class ViewNavigator(ABC):
     def view_pack_args(self) -> dict[str, any]:
         """ Returns view packing arguments. """
         return self.__pack_args
+
+    def view_widget_manager(self) -> WidgetManager:
+        """ Returns view widget manager. """
+        return self.__view_widget_manager
 
     def get_view_context(self, identifier: str) -> ViewContext:
         """ Returns context of requested view. """
@@ -97,11 +103,16 @@ class ViewNavigator(ABC):
         view_init_args.update(self.__default_view_args)
         context_init_args: dict[str, any] = {
             f"{view_arg}": view_type(**view_init_args),
+            f"{view_arg}_id": identifier,
             'restrict': restrict,
             'condition': condition
         }
 
         self.__views[identifier] = context_type(**context_init_args)
+        self.__view_widget_manager.new(
+            identifier=f"{identifier}_{view_arg}",
+            widget=self.get_view_context(identifier).view()
+        )
 
         if show:
             self.switch(identifier)

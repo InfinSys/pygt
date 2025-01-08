@@ -11,6 +11,7 @@ from .view_navigator import ViewNavigator
 from pygt.view import Page
 from pygt.view.navigation.utility.page_context import PageContext
 from pygt.view.utility.viewport_proxy import ViewportProxy
+from pygt.widget.utility.widget_manager import WidgetManager
 
 
 #   GLOBAL DEFINITIONS
@@ -20,8 +21,12 @@ pass
 #   CLASSES
 class PageNavigator(ViewNavigator):
     """ Viewport page navigator. """
-    def __init__(self, default_page_args: dict[str, any]) -> None:
-        super().__init__(default_view_args=default_page_args, proxy_type=ViewportProxy)
+    def __init__(self, default_page_args: dict[str, any], widget_manager: WidgetManager) -> None:
+        super().__init__(
+            default_view_args=default_page_args,
+            widget_manager=widget_manager,
+            proxy_type=ViewportProxy
+        )
 
     def pages(self) -> list[str]:
         """ Returns list of page identifiers. """
@@ -82,7 +87,11 @@ class PageNavigator(ViewNavigator):
         if self.current_view() is not None:
             self.get_current_page().pack_forget()
 
-        self.get_page_context(page_id).show(**self.view_pack_args())
+        self.get_page_context(page_id).show(
+            widget_manager=self.view_widget_manager(),
+            view_arg="page",
+            **self.view_pack_args()
+        )
         self.update_view_info(current=page_id)
         return True
 
