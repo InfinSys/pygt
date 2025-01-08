@@ -33,6 +33,9 @@ class WindowController:
         self.__min_height: int = height if height is not None else DEFAULT_WINDOW_HEIGHT
         self.__is_borderless: bool = False
         self.__is_fullscreen: bool = False
+        self.__always_topmost: bool = False
+        self.__vertical_resizable: bool = True
+        self.__horizontal_resizable: bool = True
 
         for config_func in [self.__tk.config, self.__tk.minsize]:
             config_func(width=self.__min_width, height=self.__min_height)
@@ -117,6 +120,14 @@ class WindowController:
 
         return (overlap_area / window_area) * 100
 
+    def is_vertically_resizable(self) -> bool:
+        """ Returns true if user can resize window in vertical direction. """
+        return self.__vertical_resizable
+
+    def is_horizontally_resizable(self) -> bool:
+        """ Returns true if user can resize window in horizontal direction. """
+        return self.__horizontal_resizable
+
     def is_minimized(self) -> bool:
         """ Returns true if window is minimized. """
         return self.__tk.state() == "iconic"
@@ -124,6 +135,11 @@ class WindowController:
     def is_fullscreen(self) -> bool:
         """ Returns true if window is in fullscreen mode. """
         return self.__is_fullscreen
+
+    def is_always_topmost(self) -> bool:
+        """ Returns true if window is configured to
+        persistently remain on top of all others. """
+        return self.__always_topmost
 
     def is_maximized(self) -> bool:
         """ Returns true if window is maximized. """
@@ -246,6 +262,10 @@ class WindowController:
         new_size: tuple[int, int] = self.__calculate_ratio_size(scale=scale, aspect=aspect)
         self.set_size(width=new_size[0], height=new_size[1])
 
+    def set_resizability(self, horizontal: bool = None, vertical: bool = None) -> None:
+        """ Set window resize capabilities. """
+        pass  # TODO: Complete WindowController class .set_resizability() method
+
     def set_position(self, x_coord: int, y_coord: int) -> None:
         """ Set window display position. """
         self.set_geometry(width=self.width(), height=self.height(), x=x_coord, y=y_coord)
@@ -311,6 +331,22 @@ class WindowController:
             x_coord=(display_x_left + rel_x_coord),
             y_coord=(display_y_top + rel_y_coord)
         )
+
+    def enable_always_on_top(self) -> None:
+        """ Set application window to persistently be topmost. """
+        pass  # TODO: Complete WindowController class .enable_always_on_top() method
+
+    def disable_always_on_top(self) -> None:
+        """ Remove application window topmost configuration. """
+        pass  # TODO: Complete WindowController class .enable_always_on_top() method
+
+    def bring_to_foreground(self, force: bool = False) -> None:
+        """ Raise application window above all other open windows. """
+        pass  # TODO: Complete WindowController class .bring_to_foreground() method
+
+    def send_to_background(self) -> None:
+        """ Lower application window to bottom of window stack order. """
+        pass  # TODO: Complete WindowController .send_to_background() method
 
     def enter_fullscreen(self) -> None:
         """ Enter fullscreen mode. """
