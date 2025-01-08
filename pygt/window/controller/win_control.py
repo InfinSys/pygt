@@ -31,7 +31,6 @@ class WindowController:
         self.__tk_exit = window_exit_call if callable(window_exit_call) else None
         self.__min_width: int = width if width is not None else DEFAULT_WINDOW_WIDTH
         self.__min_height: int = height if height is not None else DEFAULT_WINDOW_HEIGHT
-        self.__is_borderless: bool = False
 
         for config_func in [self.__tk.config, self.__tk.minsize]:
             config_func(width=self.__min_width, height=self.__min_height)
@@ -157,7 +156,7 @@ class WindowController:
     def is_borderless(self) -> bool:
         """ Returns true if window contains
         no native windowing system controls. """
-        return self.__is_borderless
+        return bool(self.__tk.overrideredirect())
 
     def display_name(self) -> str:
         """ Returns name of display window is located on. """
@@ -407,15 +406,13 @@ class WindowController:
 
     def enable_native_controls(self) -> None:
         """ Enable native windowing system controls. """
-        if self.__is_borderless:
+        if self.is_borderless():
             self.__tk.overrideredirect(False)
-            self.__is_borderless = False
 
     def disable_native_controls(self) -> None:
         """ Disable native windowing system controls. """
-        if not self.__is_borderless:
+        if not self.is_borderless():
             self.__tk.overrideredirect(True)
-            self.__is_borderless = True
 
     def __calculate_ratio_size(self, scale: float, aspect: tuple[int, int]) -> tuple[int, int]:
         screen_width, screen_height = self.display_resolution()
