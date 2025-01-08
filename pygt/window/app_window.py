@@ -36,9 +36,9 @@ class Window(tk.Tk):
 
         self.__controller: WindowController = WindowController(
             window=self,
-            window_exit=self.window_exit,
             width=width,
-            height=height
+            height=height,
+            window_exit_call=self.window_exit
         )
 
         self.__event_handler: ViewEventHandler = ViewEventHandler(
@@ -61,7 +61,9 @@ class Window(tk.Tk):
         self.__publish_view_apparatus_services()
         self.__publish_subwindow_dispatcher_services()
 
-        # TODO: Implement ApplicationExitHandler class for Window class
+        # TODO: Implement base ExitHandler class
+        # TODO: Implement ViewExitHandler class for ViewInterface types
+        # TODO: Implement WindowExitHandler class for Window class
         # self.__exit_prerequisites: list[ServiceEndpoint] = []
 
         self.__configure()
