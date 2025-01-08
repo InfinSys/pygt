@@ -50,16 +50,21 @@ class ExitHandler:
         del self.__exit_prerequisites[identifier]
         return True
 
-    def do_graceful_exit(self) -> None:
-        """ Initiate exit sequence. """
-        for prereq_id, prerequisite in self.__exit_prerequisites.items():
-            prerequisite.execute()
-
-        return self.__final_exit()
-
-    def do_forceful_exit(self) -> None:
+    def do_forceful_exit(self) -> int:
         """ Forcefully exit, overriding exit prerequisites. """
-        return self.__final_exit()
+        self.__final_exit()
+        return 400
+
+    def do_graceful_exit(self) -> int:
+        """ Initiate exit sequence. """
+        try:
+            for prereq_id, prerequisite in self.__exit_prerequisites.items():
+                prerequisite.execute()
+        except Exception:
+            return self.do_forceful_exit()
+
+        self.__final_exit()
+        return 0
 
     def post_exit(self, **kwargs) -> any:
         """ Initiate post exit sequence. """
