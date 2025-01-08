@@ -82,26 +82,26 @@ class ViewNavigator(ABC):
         """ Switch to requested view. """
         pass
 
-    def attach(self, view_type: type, context_type: type, view_arg: str, identifier: str, **init_args) -> bool:
+    def attach(self, view_type: type, context_type: type, view_arg: str, identifier: str, **view_init_args) -> bool:
         """ Include new view in this view. """
         if self.is_existing_view(identifier):
             return False
 
-        restrict: bool = init_args.pop('restrict', False)
-        condition = init_args.pop('condition', None)
-        show: bool = init_args.pop('show', False)
+        restrict: bool = view_init_args.pop('restrict', False)
+        condition = view_init_args.pop('condition', None)
+        show: bool = view_init_args.pop('show', False)
         restrict = restrict if type(restrict) is bool else False
         condition = condition if callable(condition) else None
         show = show if restrict is False else False
 
-        init_args.update(self.__default_view_args)
-        init_args[view_arg] = view_type(**init_args)
+        view_init_args.update(self.__default_view_args)
+        context_init_args: dict[str, any] = {
+            f"{view_arg}": view_type(**view_init_args),
+            'restrict': restrict,
+            'condition': condition
+        }
 
-        self.__views[identifier] = context_type(
-            page=view_type(**init_args),
-            restrict=restrict,
-            condition=condition
-        )
+        self.__views[identifier] = context_type(**context_init_args)
 
         if show:
             self.switch(identifier)
