@@ -31,11 +31,15 @@ class ServiceEndpoint:
 
     def execute(self, **override_args) -> any:
         """ Execute endpoint. """
+        ex_response: any = None
+
         if not override_args:
-            return self.__func(**self.__args)
+            ex_response = self.__func(**self.__args)
         else:
-            return self.__func(**override_args)
+            ex_response = self.__func(**override_args)
+
+        return ex_response
 
     def __call__(self, *args, **kwargs) -> any:
         """ Execute endpoint. """
-        self.__func(*args, **kwargs)
+        return self.__func(*args, **kwargs)
