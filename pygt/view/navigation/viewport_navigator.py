@@ -102,3 +102,10 @@ class ViewportNavigator(ViewNavigator):
             identifier=identifier,
             **init_args
         )
+
+    def release_viewport(self, identifier: str) -> bool:
+        """ Remove viewport from window view. """
+        return self.release(
+            view_arg="viewport",
+            identifier=identifier
+        )
