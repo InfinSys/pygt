@@ -66,6 +66,7 @@ class Window(tk.Tk):
             post_exit_call=exit
         )
 
+        self.__publish_window_exit_handler_services()
         self.__configure()
 
     @property
@@ -109,14 +110,22 @@ class Window(tk.Tk):
         """ Returns window services broker. """
         return self.__service_broker
 
-    def window_exit(self, prereq_override: bool = False) -> None:
+    def window_exit(self, prereq_override: bool = False, exit_status: int = None) -> None:
         """ Inititate window exit sequence. """
-        if prereq_override is True:
+        if (prereq_override is True) and (exit_status is None):
+            return self.__exit_handler.post_exit(
+                code=self.__exit_handler.do_forceful_exit()
+            )
+        elif (prereq_override is False) and (exit_status is None):
+            return self.__exit_handler.post_exit(
+                code=self.__exit_handler.do_graceful_exit()
+            )
+        elif prereq_override is True:
             self.__exit_handler.do_forceful_exit()
-            return self.__exit_handler.post_exit(code=1)
-
-        self.__exit_handler.do_graceful_exit()
-        return self.__exit_handler.post_exit(code=0)
+            return self.__exit_handler.post_exit(code=exit_status)
+        else:
+            self.__exit_handler.do_graceful_exit()
+            return self.__exit_handler.post_exit(code=exit_status)
 
     @staticmethod
     def is_win32_dpi_aware() -> bool:
@@ -150,6 +159,14 @@ class Window(tk.Tk):
         """ Commit window subwindow dispatcher services
         to global window service endpoints.  """
         services: dict[str, any] = {}
+
+        for service_key, func in services.items():
+            self.service.new(identifier=service_key, service=ServiceEndpoint(func=func))
+
+    def __publish_window_exit_handler_services(self) -> None:
+        """ Commit window exit handler services to global
+         window service endpoints. """
+        services: dict[str, any] = self.__get_window_exit_handler_services_definition()
 
         for service_key, func in services.items():
             self.service.new(identifier=service_key, service=ServiceEndpoint(func=func))
@@ -235,6 +252,13 @@ class Window(tk.Tk):
     def __get_subwindow_dispatcher_services_definition(self) -> dict[str, any]:
         """ Returns subwindow dispatcher bound services. """
         pass
+
+    def __get_window_exit_handler_services_definition(self) -> dict[str, any]:
+        """ Returns window exit handler bound services. """
+        return {
+            CoreSvcKeys.ADD_WINDOW_EXIT_PREREQ: self.exit.add_exit_prerequisite,
+            CoreSvcKeys.REMOVE_WINDOW_EXIT_PREREQ: self.exit.remove_exit_prerequisite,
+        }
 
     def __configure(self) -> None:
         """ Prepapre application window. """
