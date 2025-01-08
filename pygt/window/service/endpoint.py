@@ -16,7 +16,7 @@ pass
 
 #   CLASSES
 class ServiceEndpoint:
-    """ Application service endpoint. """
+    """ Standalone application service endpoint. """
     def __init__(self, func, **func_args) -> None:
         self.__func = func if callable(func) else None
         self.__args: dict = func_args
