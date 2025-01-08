@@ -4,6 +4,8 @@ import pygt
 from pygt.window import Window
 from pygt_tests import WindowTests
 
+from pygt.view import Viewport
+
 
 if __name__ == "__main__":
     print("\n| Dev Script |\n")

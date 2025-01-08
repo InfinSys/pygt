@@ -11,7 +11,7 @@ from pygt.window.controller import WindowController
 from pygt.event.handler import ViewEventHandler
 from pygt.window.service import WindowServiceBroker, ServiceEndpoint, \
     CoreSvcKeys
-#from pygt.window.view import WindowViewApparatus
+from pygt.window.view import WindowViewApparatus
 
 
 #   GLOBAL DEFINITIONS
@@ -30,7 +30,7 @@ except Exception:
 
 #   CLASSES
 class Window(tk.Tk):
-    """ Main application window base class. """
+    """ Base main application window class. """
     def __init__(self, width: int = None, height: int = None) -> None:
         super().__init__()
 
@@ -51,21 +51,19 @@ class Window(tk.Tk):
         self.__publish_control_services()
         self.__publish_event_handler_services()
 
-        #self.__view_apparatus: WindowViewApparatus = WindowViewApparatus(
-        #    window=self,
-        #    instance_hash=self.__key(),
-        #    service=self.service_broker
-        #)
+        self.__view_apparatus: WindowViewApparatus = WindowViewApparatus(
+            window=self,
+            service_call=self.service_broker
+        )
 
-        # Subwindow Dispatcher
+        # TODO: Implement SubwindowDispatcher class for Window class
 
         self.__publish_view_apparatus_services()
         self.__publish_subwindow_dispatcher_services()
-        ...
 
-        self.__exit_prerequisites: list[ServiceEndpoint] = []
+        # TODO: Implement ApplicationExitHandler class for Window class
+        # self.__exit_prerequisites: list[ServiceEndpoint] = []
 
-        #self.__publish_view_services()
         self.__configure()
 
     @property
@@ -80,17 +78,17 @@ class Window(tk.Tk):
     def service(self) -> WindowServiceBroker:
         return self.__service_broker
 
-    #@property
-    #def view(self) -> WindowViewApparatus:
-    #    return self.__view_apparatus
+    @property
+    def view(self) -> WindowViewApparatus:
+        return self.__view_apparatus
 
     def controller(self) -> WindowController:
         """ Returns window controller. """
         return self.__controller
 
-    #def view_apparatus(self) -> WindowViewApparatus:
-    #    """ Returns window view apparatus. """
-    #    pass
+    def view_apparatus(self) -> WindowViewApparatus:
+        """ Returns window view apparatus. """
+        return self.__view_apparatus
 
     def event_handler(self) -> ViewEventHandler:
         """ Returns window event handler. """
@@ -99,15 +97,17 @@ class Window(tk.Tk):
     def service_broker(self) -> WindowServiceBroker:
         return self.__service_broker
 
-    def add_window_exit_prerequisite(self, func, **func_args) -> None:
-        self.__exit_prerequisites.append(ServiceEndpoint(func, **func_args))
+    #def add_window_exit_prerequisite(self, func, **func_args) -> None:
+    #    self.__exit_prerequisites.append(ServiceEndpoint(func, **func_args))
 
     def window_exit(self, prereq_override: bool = False) -> None:
-        if prereq_override is False:
-            for prereq in self.__exit_prerequisites:
-                prereq.execute()
+        if prereq_override is True:
+            return self.__disassemble()
 
-        self.destroy()
+        #for prereq in self.__exit_prerequisites:
+        #    prereq.execute()
+
+        self.__disassemble()
 
     @staticmethod
     def is_win32_dpi_aware() -> bool:
@@ -132,7 +132,7 @@ class Window(tk.Tk):
     def __publish_view_apparatus_services(self) -> None:
         """ Commit window view apparatus services
         to global window service endpoints.  """
-        services: dict[str, any] = {}
+        services: dict[str, any] = self.__get_view_apparatus_services_definition()
 
         for service_key, func in services.items():
             self.service.new(identifier=service_key, service=ServiceEndpoint(func=func))
@@ -203,14 +203,28 @@ class Window(tk.Tk):
 
     def __get_view_apparatus_services_definition(self) -> dict[str, any]:
         """ Returns window view apparatus bound services. """
-        pass
+        return {
+            CoreSvcKeys.WINDOW_VIEW_IS_ENABLED: self.__view_apparatus.is_enabled,
+            CoreSvcKeys.ENABLE_WINDOW_VIEW: self.__view_apparatus.enable_window_view,
+            CoreSvcKeys.DISABLE_WINDOW_VIEW: self.__view_apparatus.disable_window_view,
+            CoreSvcKeys.WINDOW_VIEWPORTS: self.__view_apparatus.view.viewports,
+            CoreSvcKeys.SHOW_WINDOW_VIEWPORT: self.__view_apparatus.view.switch,
+            CoreSvcKeys.GET_WINDOW_VIEWPORT: self.__view_apparatus.view.get_viewport,
+            CoreSvcKeys.ATTACH_WINDOW_VIEWPORT: self.__view_apparatus.view.attach,
+            CoreSvcKeys.RELEASE_WINDOW_VIEWPORT: self.__view_apparatus.view.release
+        }
 
     def __get_subwindow_dispatcher_services_definition(self) -> dict[str, any]:
         """ Returns subwindow dispatcher bound services. """
         pass
 
     def __configure(self) -> None:
+        """ Prepapre application window. """
         self.protocol("WM_DELETE_WINDOW", self.window_exit)
+
+    def __disassemble(self) -> None:
+        """ Destroy application window. """
+        self.destroy()
 
     def __key(self) -> int:
         return self.__hash__() + self.winfo_id()

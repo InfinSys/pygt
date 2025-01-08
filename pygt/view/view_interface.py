@@ -36,6 +36,8 @@ class ViewInterface(Frame):
             schedule_call=self.after
         )
 
+        self.__configure_frame()
+
     @property
     def control(self) -> ViewController:
         """ View controller. """
@@ -50,3 +52,16 @@ class ViewInterface(Frame):
     def service(self) -> WindowServiceBroker:
         """ View window services. """
         return self.__service_call()
+
+    def view_controller(self) -> ViewController:
+        """ Returns view controller. """
+        return self.__controller
+
+    def event_handler(self) -> ViewEventHandler:
+        """ Returns view event handler. """
+        return self.__event_handler
+
+    def __configure_frame(self) -> None:
+        """ Configure this tkinter frame. """
+        self.grid_propagate(False)
+        self.pack_propagate(False)

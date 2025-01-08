@@ -12,6 +12,10 @@ from pygt.utility.geometric import is_intersecting_bounds
 from pygt.model.geometric import GeoBounds
 
 
+#   GLOBAL DEFINITIONS
+pass
+
+
 #   CLASSES
 class ViewController:
     """ Window view interface controller. """

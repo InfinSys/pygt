@@ -5,4 +5,5 @@ Application Window View API Package
 
 
 #   EXTENDED SYMBOLS
-pass
+from pygt.view.page import Page
+from pygt.view.viewport import Viewport
