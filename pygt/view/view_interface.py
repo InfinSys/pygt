@@ -10,6 +10,7 @@ from tkinter import Frame, Widget
 from pygt.window.service import WindowServiceBroker
 from pygt.view.controller import ViewController
 from pygt.event.handler import ViewEventHandler
+from pygt.widget.utility.widget_manager import WidgetManager
 
 
 #   GLOBAL DEFINITIONS
@@ -36,6 +37,8 @@ class ViewInterface(Frame):
             schedule_call=self.after
         )
 
+        self.__widget_manager: WidgetManager = WidgetManager()
+
         self.__configure_frame()
 
     @property
@@ -49,6 +52,11 @@ class ViewInterface(Frame):
         return self.__event_handler
 
     @property
+    def widget(self) -> WidgetManager:
+        """ View widget manager. """
+        return self.__widget_manager
+
+    @property
     def service(self) -> WindowServiceBroker:
         """ View window services. """
         return self.__service_call()
@@ -60,6 +68,10 @@ class ViewInterface(Frame):
     def event_handler(self) -> ViewEventHandler:
         """ Returns view event handler. """
         return self.__event_handler
+
+    def widget_manager(self) -> WidgetManager:
+        """ Returns view widget manager. """
+        return self.__widget_manager
 
     def __configure_frame(self) -> None:
         """ Configure this tkinter frame. """
