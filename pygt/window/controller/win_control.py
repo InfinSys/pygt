@@ -26,9 +26,9 @@ WIN32_VERSION: str = get_windows_version()
 #   CLASSES
 class WindowController:
     """ Application window instance controller. """
-    def __init__(self, window: Tk, window_exit, width: int, height: int) -> None:
+    def __init__(self, window: Tk, width: int, height: int, window_exit_call) -> None:
         self.__tk: Tk = window if issubclass(type(window), Tk) else None
-        self.__tk_exit = window_exit if callable(window_exit) else None
+        self.__tk_exit = window_exit_call if callable(window_exit_call) else None
         self.__min_width: int = width if width is not None else DEFAULT_WINDOW_WIDTH
         self.__min_height: int = height if height is not None else DEFAULT_WINDOW_HEIGHT
         self.__is_borderless: bool = False
