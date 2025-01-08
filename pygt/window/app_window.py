@@ -57,6 +57,7 @@ class Window(tk.Tk):
         )
 
         # TODO: Implement SubwindowDispatcher class for Window class
+        # TODO: Implement WindowThreadManager class for Window class
 
         self.__publish_view_apparatus_services()
         self.__publish_subwindow_dispatcher_services()
