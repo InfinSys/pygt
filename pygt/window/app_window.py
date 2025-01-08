@@ -266,8 +266,3 @@ class Window(tk.Tk):
 
     def __key(self) -> int:
         return self.__hash__() + self.winfo_id()
-
-    @staticmethod
-    def __disassemble(exit_status: int = 0) -> None:
-        """ Close application process. """
-        exit(exit_status)
