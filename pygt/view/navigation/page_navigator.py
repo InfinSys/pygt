@@ -9,9 +9,8 @@ pass
 #   INTERNAL IMPORTS
 from .view_navigator import ViewNavigator
 from pygt.view import Page
-
 from pygt.view.navigation.utility.page_context import PageContext
-from pygt.widget.utility.viewport_proxy import ViewportProxy
+from pygt.view.utility.viewport_proxy import ViewportProxy
 
 
 #   GLOBAL DEFINITIONS
