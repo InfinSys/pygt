@@ -8,8 +8,7 @@ from tkinter import Frame
 
 #   INTERNAL IMPORTS
 from pygt.view.view_interface import ViewInterface
-from pygt.widget.utility.widget_container import WidgetContainer
-from pygt.widget.utility.viewport_proxy import ViewportProxy
+from pygt.view.utility.viewport_proxy import ViewportProxy
 
 
 #   GLOBAL DEFINITIONS
@@ -23,7 +22,6 @@ class Page(ViewInterface):
         super().__init__(parent=viewport, service_call=service_call)
 
         self.__viewport_proxy: ViewportProxy = control_proxy
-        pass
 
     @property
     def host(self) -> ViewportProxy:
