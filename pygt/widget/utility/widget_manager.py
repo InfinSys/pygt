@@ -1,0 +1,101 @@
+
+""" Application View Widget Manager """
+
+
+#   EXTERNAL IMPORTS
+from tkinter import Widget, Frame
+
+
+#   INTERNAL IMPORTS
+pass
+
+
+#   GLOBAL DEFINITIONS
+pass
+
+
+#   CLASSES
+class WidgetManager:
+    """ Application view widget manager. """
+    def __init__(self) -> None:
+        self.__widgets: dict[str, Widget] = {}
+
+    def widgets(self) -> list[str]:
+        """ Returns list of managed widget identifiers. """
+        return [widget_id for widget_id in self.__widgets.keys()]
+
+    def is_existing_widget(self, identifier: str) -> bool:
+        """ Returns true is a widget exists with the provided identifier. """
+        return identifier in self.__widgets.keys()
+
+    def get(self, identifier: str) -> Widget:
+        """ Returns requested widget. """
+        if not self.is_existing_widget(identifier):
+            return None
+
+        return self.__widgets[identifier]
+
+    def get_widgets(self, *widget_ids) -> list[Widget]:
+        """ Returns requested widgets or all if no identifiers specified. """
+        requested: list[Widget] = []
+
+        for identifier, widget in self.__widgets.items():
+            if (widget_ids and (identifier in widget_ids)) or (not widget_ids):
+                requested.append(widget)
+
+        return requested
+
+    def new(self, identifier: str, widget: Widget) -> Widget:
+        """ Add new widget to view and return instance. """
+        if self.is_existing_widget(identifier):
+            return None
+
+        self.__widgets[identifier] = widget
+
+        return widget
+
+    def pack(self, identifier: str, **pack_args) -> None:
+        """ Pack specified widget on view. """
+        if not self.is_existing_widget(identifier):
+            return
+
+        self.__widgets[identifier].pack(**pack_args)
+
+    def remove(self, identifier: str) -> bool:
+        """ Remove specified widget from view management. """
+        if not self.is_existing_widget(identifier):
+            return False
+
+        self.__widgets[identifier].pack_forget()
+        self.__widgets[identifier].destroy()
+        del self.__widgets[identifier]
+        return True
+
+    def set_background_of(self, identifier: str, color: str) -> None:
+        """ Set background color of specified widget. """
+        if not self.is_existing_widget(identifier):
+            return
+
+        self.__widgets[identifier].config(bg=color)
+
+    def set_foreground_of(self, identifier: str, color: str) -> None:
+        """ Set foreground color of specified widget. """
+        if not self.is_existing_widget(identifier):
+            return
+
+        self.__widgets[identifier].config(fg=color)
+
+    def new_container(self, identifier: str, parent: Widget, **container_args) -> Frame:
+        """ Create new managed widget container and return instance. """
+        if self.is_existing_widget(identifier):
+            return None
+
+        self.new(
+            identifier=identifier,
+            widget=Frame(
+                master=parent,
+                **container_args
+            )
+        )
+
+        return self.__widgets[identifier]
