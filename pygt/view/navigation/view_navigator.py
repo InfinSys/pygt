@@ -119,9 +119,16 @@ class ViewNavigator(ABC):
 
         return True
 
-    def release(self, identifier: str) -> bool:
+    def release(self, view_arg: str, identifier: str) -> bool:
         """ Remove view from this view. """
-        pass  # TODO: Complete the ViewNavigator class .release() method.
+        if not self.is_existing_view(identifier):
+            return False
+
+        if not self.__view_widget_manager.remove(identifier=f"{identifier}_{view_arg}"):
+            return False
+
+        del self.__views[identifier]
+        return True
 
     def __configure_control_proxy(self, proxy_type: type) -> None:
         """ Setup navigator control proxy for encompassing views. """
