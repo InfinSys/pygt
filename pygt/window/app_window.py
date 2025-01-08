@@ -8,7 +8,7 @@ import tkinter as tk
 
 #   INTERNAL IMPORTS
 from pygt.window.controller import WindowController
-from pygt.event.handler import ViewEventHandler
+from pygt.event.handler import ViewEventHandler, ExitHandler
 from pygt.window.service import WindowServiceBroker, ServiceEndpoint, \
     CoreSvcKeys
 from pygt.window.view import WindowViewApparatus
@@ -56,33 +56,43 @@ class Window(tk.Tk):
             service_call=self.service_broker
         )
 
+        # TODO: Setup new WindowController class services in Window class
         # TODO: Implement SubwindowDispatcher class for Window class
 
         self.__publish_view_apparatus_services()
         self.__publish_subwindow_dispatcher_services()
 
-        # TODO: Implement base ExitHandler class
-        # TODO: Implement ViewExitHandler class for ViewInterface types
-        # TODO: Implement WindowExitHandler class for Window class
-        # self.__exit_prerequisites: list[ServiceEndpoint] = []
+        self.__exit_handler: ExitHandler = ExitHandler(
+            final_call=self.destroy,
+            post_exit_call=exit
+        )
 
         self.__configure()
 
     @property
     def control(self) -> WindowController:
+        """ Window controller. """
         return self.__controller
 
     @property
     def event(self) -> ViewEventHandler:
+        """ Window event handler. """
         return self.__event_handler
 
     @property
     def service(self) -> WindowServiceBroker:
+        """ Window services broker. """
         return self.__service_broker
 
     @property
     def view(self) -> WindowViewApparatus:
+        """ Window view apparatus. """
         return self.__view_apparatus
+
+    @property
+    def exit(self) -> ExitHandler:
+        """ Window exit handler. """
+        return self.__exit_handler
 
     def controller(self) -> WindowController:
         """ Returns window controller. """
@@ -97,19 +107,17 @@ class Window(tk.Tk):
         return self.__event_handler
 
     def service_broker(self) -> WindowServiceBroker:
+        """ Returns window services broker. """
         return self.__service_broker
 
-    #def add_window_exit_prerequisite(self, func, **func_args) -> None:
-    #    self.__exit_prerequisites.append(ServiceEndpoint(func, **func_args))
-
     def window_exit(self, prereq_override: bool = False) -> None:
+        """ Inititate window exit sequence. """
         if prereq_override is True:
-            return self.__disassemble()
+            self.__exit_handler.do_forceful_exit()
+            return self.__exit_handler.post_exit(code=1)
 
-        #for prereq in self.__exit_prerequisites:
-        #    prereq.execute()
-
-        self.__disassemble()
+        self.__exit_handler.do_graceful_exit()
+        return self.__exit_handler.post_exit(code=0)
 
     @staticmethod
     def is_win32_dpi_aware() -> bool:
@@ -224,9 +232,10 @@ class Window(tk.Tk):
         """ Prepapre application window. """
         self.protocol("WM_DELETE_WINDOW", self.window_exit)
 
-    def __disassemble(self) -> None:
-        """ Destroy application window. """
-        self.destroy()
-
     def __key(self) -> int:
         return self.__hash__() + self.winfo_id()
+
+    @staticmethod
+    def __disassemble(exit_status: int = 0) -> None:
+        """ Close application process. """
+        exit(exit_status)
