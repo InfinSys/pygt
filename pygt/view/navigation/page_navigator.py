@@ -104,3 +104,10 @@ class PageNavigator(ViewNavigator):
             identifier=identifier,
             **init_args
         )
+
+    def release_page(self, identifier: str) -> bool:
+        """ Remove page from viewport. """
+        return self.release(
+            view_arg="page",
+            identifier=identifier
+        )
