@@ -17,8 +17,8 @@ pass
 #   CLASSES
 class ViewportProxy:
     """ Window viewport proxy. """
-    def __init__(self, page_navigator) -> None:
-        self.__navigator = page_navigator
+    def __init__(self, navigator) -> None:
+        self.__navigator = navigator
 
     def pages(self) -> list[str]:
         """ Returns list of page identifiers. """
