@@ -32,10 +32,6 @@ class WindowController:
         self.__min_width: int = width if width is not None else DEFAULT_WINDOW_WIDTH
         self.__min_height: int = height if height is not None else DEFAULT_WINDOW_HEIGHT
         self.__is_borderless: bool = False
-        self.__is_fullscreen: bool = False
-        self.__always_topmost: bool = False
-        self.__vertical_resizable: bool = True
-        self.__horizontal_resizable: bool = True
 
         for config_func in [self.__tk.config, self.__tk.minsize]:
             config_func(width=self.__min_width, height=self.__min_height)
@@ -122,11 +118,11 @@ class WindowController:
 
     def is_vertically_resizable(self) -> bool:
         """ Returns true if user can resize window in vertical direction. """
-        return self.__vertical_resizable
+        return self.__tk.resizable()[1] == 1
 
     def is_horizontally_resizable(self) -> bool:
         """ Returns true if user can resize window in horizontal direction. """
-        return self.__horizontal_resizable
+        return self.__tk.resizable()[0] == 1
 
     def is_minimized(self) -> bool:
         """ Returns true if window is minimized. """
@@ -134,12 +130,12 @@ class WindowController:
 
     def is_fullscreen(self) -> bool:
         """ Returns true if window is in fullscreen mode. """
-        return self.__is_fullscreen
+        return bool(self.__tk.attributes('-fullscreen'))
 
     def is_always_topmost(self) -> bool:
         """ Returns true if window is configured to
         persistently remain on top of all others. """
-        return self.__always_topmost
+        return bool(self.__tk.attributes('-topmost'))
 
     def is_maximized(self) -> bool:
         """ Returns true if window is maximized. """
@@ -264,7 +260,28 @@ class WindowController:
 
     def set_resizability(self, horizontal: bool = None, vertical: bool = None) -> None:
         """ Set window resize capabilities. """
-        pass  # TODO: Complete WindowController class .set_resizability() method
+        h_resize, v_resize = self.__tk.resizable()
+
+        if (horizontal is not None) and (bool(h_resize) != horizontal):
+            h_resize = bool(horizontal)
+
+        if (vertical is not None) and (bool(v_resize) != vertical):
+            v_resize = bool(vertical)
+
+        self.__tk.resizable(width=h_resize, height=v_resize)
+
+    def toggle_resizability(self) -> None:
+        """ Toggle complete window resizability. """
+        h_resize, v_resize = self.__tk.resizable()
+
+        if h_resize != v_resize:
+            h_resize = False
+            v_resize = False
+        else:
+            h_resize = not bool(h_resize)
+            v_resize = not bool(v_resize)
+
+        self.__tk.resizable(width=h_resize, height=v_resize)
 
     def set_position(self, x_coord: int, y_coord: int) -> None:
         """ Set window display position. """
@@ -292,7 +309,7 @@ class WindowController:
 
     def set_background(self, color: str) -> None:
         """ Set window background color. """
-        self.__tk.config(bg=color)
+        self.__tk.configure(bg=color)
 
     def center_on_display(self, display: str = None) -> None:
         """ Center window on display. """
@@ -334,31 +351,35 @@ class WindowController:
 
     def enable_always_on_top(self) -> None:
         """ Set application window to persistently be topmost. """
-        pass  # TODO: Complete WindowController class .enable_always_on_top() method
+        if not self.is_always_topmost():
+            self.__tk.attributes('-topmost', True)
 
     def disable_always_on_top(self) -> None:
         """ Remove application window topmost configuration. """
-        pass  # TODO: Complete WindowController class .enable_always_on_top() method
+        if self.is_always_topmost():
+            self.__tk.attributes('-topmost', False)
 
     def bring_to_foreground(self, force: bool = False) -> None:
         """ Raise application window above all other open windows. """
-        pass  # TODO: Complete WindowController class .bring_to_foreground() method
+        self.__tk.lift()
+
+        if force:
+            self.enable_always_on_top()
+            self.disable_always_on_top()
 
     def send_to_background(self) -> None:
         """ Lower application window to bottom of window stack order. """
-        pass  # TODO: Complete WindowController .send_to_background() method
+        self.__tk.lower()
 
     def enter_fullscreen(self) -> None:
         """ Enter fullscreen mode. """
-        if not self.__is_fullscreen:
+        if not self.is_fullscreen():
             self.__tk.attributes("-fullscreen", True)
-            self.__is_fullscreen = True
 
     def exit_fullscreen(self) -> None:
         """ Exit fullscreen mode. """
-        if self.__is_fullscreen:
+        if self.is_fullscreen():
             self.__tk.attributes("-fullscreen", False)
-            self.__is_fullscreen = False
 
     def maximize(self) -> None:
         """ Maximize window. """
