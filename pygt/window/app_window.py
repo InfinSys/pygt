@@ -56,7 +56,6 @@ class Window(tk.Tk):
             service_call=self.service_broker
         )
 
-        # TODO: Setup new WindowController class services in Window class
         # TODO: Implement SubwindowDispatcher class for Window class
 
         self.__publish_view_apparatus_services()
@@ -168,8 +167,11 @@ class Window(tk.Tk):
             CoreSvcKeys.WINDOW_IS_WITHIN: self.control.is_within,
             CoreSvcKeys.WINDOW_IS_PARTLY_WITHIN: self.control.is_partly_within,
             CoreSvcKeys.WINDOW_DISPLAY_OCCUP: self.control.display_occupation,
+            CoreSvcKeys.WINDOW_IS_X_RESIZABLE: self.control.is_horizontally_resizable,
+            CoreSvcKeys.WINDOW_IS_Y_RESIZABLE: self.control.is_vertically_resizable,
             CoreSvcKeys.WINDOW_IS_MINIMIZED: self.control.is_minimized,
             CoreSvcKeys.WINDOW_IS_FULLSCREEN: self.control.is_fullscreen,
+            CoreSvcKeys.WINDOW_IS_ALWAYS_TOPMOST: self.control.is_always_topmost,
             CoreSvcKeys.WINDOW_IS_MAXIMIZED: self.control.is_maximized,
             CoreSvcKeys.WINDOW_IS_ON_SCREEN: self.control.is_on_screen,
             CoreSvcKeys.WINDOW_IS_BORDERLESS: self.control.is_borderless,
@@ -182,8 +184,14 @@ class Window(tk.Tk):
             CoreSvcKeys.WINDOW_REL_MOUSE_COORD: self.control.rel_mouse_coord,
             CoreSvcKeys.WINDOW_HAS_MOUSE: self.control.has_mouse,
             CoreSvcKeys.SET_WINDOW_TITLE: self.control.set_title,
+            CoreSvcKeys.SET_WINDOW_RESIZABILITY: self.control.set_resizability,
+            CoreSvcKeys.TOGGLE_WINDOW_RESIZABILITY: self.control.toggle_resizability,
             CoreSvcKeys.CENTER_WINDOW: self.control.center_on_display,
             CoreSvcKeys.WINDOW_TO_DISPLAY: self.control.send_to_display,
+            CoreSvcKeys.ENABLE_ALWAYS_TOPMOST_WINDOW: self.control.enable_always_on_top,
+            CoreSvcKeys.DISABLE_ALWAYS_TOPMOST_WINDOW: self.control.disable_always_on_top,
+            CoreSvcKeys.WINDOW_TO_FOREGROUND: self.control.bring_to_foreground,
+            CoreSvcKeys.WINDOW_TO_BACKGROUND: self.control.send_to_background,
             CoreSvcKeys.FULLSCREEN_WINDOW: self.control.enter_fullscreen,
             CoreSvcKeys.FULLSCREEN_WINDOW_EXIT: self.control.exit_fullscreen,
             CoreSvcKeys.MAXIMIZE_WINDOW: self.control.maximize,
