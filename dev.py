@@ -30,6 +30,7 @@ if __name__ == "__main__":
 
     #WindowTests.live_window_controller_test(window)
     #WindowTests.interactive_window_event_handler_test(window)
+    #WindowTests.live_window_services_test(window)
 
     window.mainloop()
 
