@@ -4,5 +4,6 @@
 /.vscode
 /.idea
 
-# Ignore all Python cache files
+# Ignore all Python cache files and folders
+**/__pycache__/
 *.pyc
