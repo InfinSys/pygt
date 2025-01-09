@@ -64,9 +64,8 @@ if __name__ == "__main__":
         widget=ButtonTypes.FlatButton(
             master=dev_page,
             text="Click Me",
-            bg="white",
-            hover_bg="lightblue",
-            primary_cmd=None
+            fit_to_size=True,
+            hover_bg="lightblue"
         )
     )
     dev_page.widget.pack(identifier="flat_btn", side=tk.TOP, expand=True)
