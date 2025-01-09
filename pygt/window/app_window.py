@@ -111,6 +111,16 @@ class Window(tk.Tk):
         """ Returns window services broker. """
         return self.__service_broker
 
+    def launch_mainloop(self) -> int:
+        """ Start application mainloop. """
+        try:
+            self.mainloop()
+        except Exception as e:
+            print(f"Application failure - {e}")
+            return 1
+
+        return 0
+
     def window_exit(self, prereq_override: bool = False, exit_status: int = None) -> None:
         """ Inititate window exit sequence. """
         if (prereq_override is True) and (exit_status is None):
