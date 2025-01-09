@@ -3,6 +3,7 @@
 import tkinter as tk
 from pygt.window import Window
 from pygt.view import Viewport, Page
+from pygt.widget import ButtonTypes
 from pygt_tests import WindowTests
 
 
@@ -34,7 +35,7 @@ if __name__ == "__main__":
     )
     dev_page.control.set_background(color="#df567e")
 
-    ## Place controls on new page
+    # Place controls on new page
     dev_page.widget.new(identifier="page_label", widget=tk.Label(master=dev_page, text="Developer Page"))
     dev_page.widget.pack(identifier="page_label", side=tk.TOP, expand=True)
     dev_page.widget.set_background_of(identifier="page_label", color="#df567e")
@@ -42,7 +43,7 @@ if __name__ == "__main__":
     dev_page.widget.new(identifier="switch_btn", widget=tk.Button(master=dev_page, text="Next", command=lambda: dev_viewport.view.switch('dev_page2')))
     dev_page.widget.pack(identifier="switch_btn", side=tk.TOP, expand=True)
 
-    ## Attach another page to viewport
+    # Attach another page to viewport
     dev_viewport.view.attach(identifier="dev_page2", page_type=Page)
     dev_page2: Page = dev_viewport.view.get_page(identifier="dev_page2")
     dev_viewport.event.bind(
@@ -55,9 +56,23 @@ if __name__ == "__main__":
     dev_page2.widget.pack(identifier="page_label", side=tk.TOP, expand=True)
     dev_page2.widget.set_background_of(identifier="page_label", color="#000000")
     dev_page2.widget.set_foreground_of(identifier="page_label", color="#ffffff")
+    dev_page2.widget.new(identifier="switch_btn", widget=tk.Button(master=dev_page2, text="Back", command=lambda: dev_viewport.view.switch('dev_page')))
+    dev_page2.widget.pack(identifier="switch_btn", side=tk.TOP, expand=True)
 
-    pass
+    dev_page.widget.new(
+        identifier="flat_btn",
+        widget=ButtonTypes.FlatButton(
+            master=dev_page,
+            text="Click Me",
+            bg="white",
+            hover_bg="lightblue",
+            primary_cmd=None
+        )
+    )
+    dev_page.widget.pack(identifier="flat_btn", side=tk.TOP, expand=True)
 
-    window.mainloop()
+    window.control.center_on_display(display="DISPLAY1")
+    window.control.maximize()
+    window.launch_mainloop()
 
     print("\n| Complete |")
