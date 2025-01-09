@@ -6,7 +6,7 @@
 VERSION_MAJOR: int = 2
 """ PyGT version number major. """
 
-VERSION_MINOR: int = 0
+VERSION_MINOR: int = 1
 """ PyGT version number minor. """
 
 VERSION_PATCH: int = 0
