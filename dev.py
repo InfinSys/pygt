@@ -3,7 +3,7 @@
 import tkinter as tk
 from pygt.window import Window
 from pygt.view import Viewport, Page
-from pygt.widget import ButtonTypes, LabelTypes
+from pygt.widget import ButtonTypes, LabelTypes, EntryTypes
 from pygt_tests import WindowTests
 
 
@@ -46,6 +46,18 @@ if __name__ == "__main__":
         )
     )
     dev_page.widget.pack(identifier="dev_page_lbl", side=tk.TOP, expand=True)
+
+    dev_page.widget.new(
+        identifier="dev_page_entry",
+        widget=EntryTypes.FlatEntry(
+            master=dev_page,
+            width=15,
+            font=("Arial", 20, "normal"),
+            placeholder="First name",
+            corner_radius=5,
+        )
+    )
+    dev_page.widget.pack(identifier="dev_page_entry", side=tk.TOP, expand=True)
 
     window.control.center_on_display(display="DISPLAY1")
     window.control.maximize()
