@@ -49,11 +49,11 @@ class ButtonModel:
 
     def set_primary_command(self, command) -> None:
         """ Set primary button command. """
-        self.__primary_cmd = command
+        self.__primary_cmd = command if callable(command) else self.__primary_cmd
 
     def set_secondary_command(self, command) -> None:
         """ Set secondary button command. """
-        self.__secondary_cmd = command
+        self.__secondary_cmd = command if callable(command) else self.__secondary_cmd
 
     def text_variable(self) -> StringVar:
         """ Returns button underlying text variable. """
