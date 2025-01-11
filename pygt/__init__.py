@@ -33,6 +33,7 @@
      ------------------
 
      - **tcl/tkinter**
+     - **pillow**
      - **screeninfo**
      - **customtkinter**
 
