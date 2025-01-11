@@ -1,66 +1,16 @@
 
 #   IMPORTS
-import tkinter as tk
 from pygt.window import Window
-from pygt.view import Viewport, Page
-from pygt.widget import ButtonTypes, LabelTypes, EntryTypes
 from pygt_tests import WindowTests
 
 
 if __name__ == "__main__":
     print("\n| Dev Script |\n")
 
-    # Create application window
     window: Window = Window(width=800, height=400)
     window.control.set_background(color="#000000")
     window.view.control.set_background(color="#232323")
 
-    # Attach new viewport to window
-    window.view.view.attach(identifier="dev_viewport", viewport_type=Viewport, show=True)
-    dev_viewport: Viewport = window.view.view.get_viewport(identifier="dev_viewport")
-    window.view.event.bind(
-        identifier="dev_vp_sizing",
-        sequence="Configure",
-        cmd=lambda e: dev_viewport.control.set_scale(scale=.9, aspect=(16, 9))
-    )
-    dev_viewport.control.set_background(color="#ffffff")
-
-    # Attach new page to viewport
-    dev_viewport.view.attach(identifier="dev_page", page_type=Page, show=True)
-    dev_page: Page = dev_viewport.view.get_page(identifier="dev_page")
-    dev_viewport.event.bind(
-        identifier="dev_page_sizing",
-        sequence="Configure",
-        cmd=lambda e: dev_page.control.set_scale(scale=.5, aspect=(2, 1))
-    )
-    dev_page.control.set_background(color="#df567e")
-
-    # Place controls on new page
-    dev_page.widget.new(
-        identifier="dev_page_lbl",
-        widget=LabelTypes.TextLabel(
-            master=dev_page,
-            text="Developer Page 1",
-            font_fg="#ffffff",
-            bg="#df567e"
-        )
-    )
-    dev_page.widget.pack(identifier="dev_page_lbl", side=tk.TOP, expand=True)
-
-    dev_page.widget.new(
-        identifier="dev_page_entry",
-        widget=EntryTypes.FlatEntry(
-            master=dev_page,
-            width=15,
-            font=("Arial", 20, "normal"),
-            placeholder="First name",
-            corner_radius=5,
-        )
-    )
-    dev_page.widget.pack(identifier="dev_page_entry", side=tk.TOP, expand=True)
-
-    window.control.center_on_display(display="DISPLAY1")
-    window.control.maximize()
     window.launch_mainloop()
 
     print("\n| Complete |")
