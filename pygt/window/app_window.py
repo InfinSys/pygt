@@ -3,7 +3,7 @@
 
 
 #   EXTERNAL IMPORTS
-import tkinter as tk
+from tkinter import Tk
 
 
 #   INTERNAL IMPORTS
@@ -29,7 +29,7 @@ except Exception:
 
 
 #   CLASSES
-class Window(tk.Tk):
+class Window(Tk):
     """ Base main application window class. """
     def __init__(self, width: int = None, height: int = None) -> None:
         super().__init__()
