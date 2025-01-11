@@ -7,6 +7,7 @@ from tkinter import Tk
 
 
 #   INTERNAL IMPORTS
+from .subwindow import Subwindow
 from pygt.window.controller import WindowController
 from pygt.event.handler import ViewEventHandler, ExitHandler
 from pygt.window.service import WindowServiceBroker, ServiceEndpoint, \
