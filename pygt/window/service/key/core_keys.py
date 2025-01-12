@@ -74,6 +74,13 @@ ATTACH_WINDOW_VIEWPORT: str = "new_window_viewport"
 RELEASE_WINDOW_VIEWPORT: str = "delete_window_viewport"
 
 
+#   Window Subwindow Dispatcher Service Keys
+WINDOW_SUBWINDOWS: str = "window_subwindows"
+GET_WINDOW_SUBWINDOW: str = "get_window_subwindow"
+SUBWINDOW_DISPATCH: str = "window_sub_dispatch"
+SUBWINDOW_CLOSE: str = "subwindow_exit"
+
+
 #   Window Exit Handler Service Keys
 ADD_WINDOW_EXIT_PREREQ: str = "add_window_exit_prereq"
 REMOVE_WINDOW_EXIT_PREREQ: str = "remove_window_exit_prereq"
