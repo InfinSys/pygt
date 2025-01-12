@@ -183,7 +183,7 @@ class Window(Tk):
     def __publish_subwindow_dispatcher_services(self) -> None:
         """ Commit window subwindow dispatcher services
         to global window service endpoints.  """
-        services: dict[str, any] = {}
+        services: dict[str, any] = self.__get_subwindow_dispatcher_services_definition()
 
         for service_key, func in services.items():
             self.service.new(identifier=service_key, service=ServiceEndpoint(func=func))
@@ -276,7 +276,12 @@ class Window(Tk):
 
     def __get_subwindow_dispatcher_services_definition(self) -> dict[str, any]:
         """ Returns subwindow dispatcher bound services. """
-        pass
+        return {
+            CoreSvcKeys.WINDOW_SUBWINDOWS: self.window.subwindows,
+            CoreSvcKeys.GET_WINDOW_SUBWINDOW: self.window.get_subwindow,
+            CoreSvcKeys.SUBWINDOW_DISPATCH: self.window.dispatch,
+            CoreSvcKeys.SUBWINDOW_CLOSE: self.window.close,
+        }
 
     def __get_window_exit_handler_services_definition(self) -> dict[str, any]:
         """ Returns window exit handler bound services. """
