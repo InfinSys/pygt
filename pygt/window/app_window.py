@@ -7,7 +7,7 @@ from tkinter import Tk
 
 
 #   INTERNAL IMPORTS
-from .subwindow import Subwindow
+from .subwindow_dispatcher import SubwindowDispatcher
 from pygt.window.controller import WindowController
 from pygt.event.handler import ViewEventHandler, ExitHandler
 from pygt.window.service import WindowServiceBroker, ServiceEndpoint, \
@@ -57,7 +57,11 @@ class Window(Tk):
             service_call=self.service_broker
         )
 
-        # TODO: Implement SubwindowDispatcher class for Window class
+        self.__subwindow_dispatcher: SubwindowDispatcher = SubwindowDispatcher(
+            window=self,
+            service_call=self.service_broker
+        )
+
         # TODO: Implement WindowThreadManager class for Window class
 
         self.__publish_view_apparatus_services()
@@ -92,6 +96,11 @@ class Window(Tk):
         return self.__view_apparatus
 
     @property
+    def window(self) -> SubwindowDispatcher:
+        """ Window subwindow dispatcher. """
+        return self.__subwindow_dispatcher
+
+    @property
     def exit(self) -> ExitHandler:
         """ Window exit handler. """
         return self.__exit_handler
@@ -111,6 +120,10 @@ class Window(Tk):
     def service_broker(self) -> WindowServiceBroker:
         """ Returns window services broker. """
         return self.__service_broker
+
+    def subwindow_dispatcher(self) -> SubwindowDispatcher:
+        """ Returns window subwindow dispatcher. """
+        return self.__subwindow_dispatcher
 
     def launch_mainloop(self) -> int:
         """ Start application mainloop. """
