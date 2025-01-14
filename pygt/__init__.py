@@ -38,7 +38,7 @@
      - **customtkinter**
 
       Package   :    **PyGT** |
-      Version   :    **2.1.0.0** |
+      Version   :    **2.1.0.1** |
       Created   :    **01/02/2025**
 
       **UUID** <*ISJTB-PY-XS-20250102-P000003*>

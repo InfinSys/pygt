@@ -12,7 +12,7 @@ VERSION_MINOR: int = 1
 VERSION_PATCH: int = 0
 """ PyGT version number patch. """
 
-VERSION_TWEAK: int = 0
+VERSION_TWEAK: int = 1
 """ PyGT version number tweak. """
 
 

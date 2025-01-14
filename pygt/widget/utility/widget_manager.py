@@ -90,6 +90,8 @@ class WidgetManager:
         if self.is_existing_widget(identifier):
             return None
 
+        propogate: bool = container_args.pop('propogate', True)
+
         self.new(
             identifier=identifier,
             widget=Frame(
@@ -97,5 +99,8 @@ class WidgetManager:
                 **container_args
             )
         )
+
+        self.get(identifier).pack_propagate(propogate)
+        self.get(identifier).grid_propagate(propogate)
 
         return self.__widgets[identifier]
