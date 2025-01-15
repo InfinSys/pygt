@@ -257,6 +257,7 @@ class Window(Tk):
             CoreSvcKeys.WINDOW_BINDING_DEFINITION: self.event.get_binding_definition,
             CoreSvcKeys.GET_WINDOW_BINDING: self.event.get_binding,
             CoreSvcKeys.BIND_TO_WINDOW: self.event.bind,
+            CoreSvcKeys.UNBIND_WINDOW_EVENT: self.event.unbind,
             CoreSvcKeys.WINDOW_HAS_BINDING: self.event.is_existing_identifier,
             CoreSvcKeys.FORWARD_WINDOW_BIND: self.event.forward,
             CoreSvcKeys.SCHEDULE: self.event.schedule,
