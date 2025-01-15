@@ -37,6 +37,7 @@ class Subwindow(Toplevel):
 
         self.__event_handler: ViewEventHandler = ViewEventHandler(
             bind_call=self.bind,
+            unbind_call=self.unbind,
             schedule_call=self.after
         )
 

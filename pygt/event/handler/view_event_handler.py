@@ -17,8 +17,10 @@ pass
 #   CLASSES
 class ViewEventHandler:
     """ Application view event handler. """
-    def __init__(self, bind_call, schedule_call) -> None:
+    def __init__(self, bind_call, schedule_call, **kwargs) -> None:
         self.__bind_call = bind_call if callable(bind_call) else None
+        self.__unbind_call = kwargs.get('unbind_call', None)
+        self.__unbind_call = self.__unbind_call if callable(self.__unbind_call) else None
         self.__schedule_call = schedule_call if callable(schedule_call) else None
         self.__bindings: dict[str, dict[str, any]] = {}
         self.__binding_subs: dict[str, list[dict[str, any]]] = {}
@@ -87,7 +89,7 @@ class ViewEventHandler:
     def bind(self, sequence: str, cmd, identifier: str = None, **extra) -> bool:
         """ Bind event to view. """
         if (identifier is None) or (identifier.strip() == ""):
-            identifier = "not_sure_yet"
+            identifier = "not_sure_yet"  # TODO: Create an auto ID generator method for ViewEventHandler class
 
         sequence = self.__format_sequence_str(sequence)
         identifier = self.__format_binding_identifier(identifier)
@@ -116,7 +118,30 @@ class ViewEventHandler:
                 **extra
             )
 
-        self.__bind_call(**bind_args)
+        self.__bindings[sequence][identifier]['tk_id'] = self.__bind_call(**bind_args)
+
+        return True
+
+    def unbind(self, sequence: str, identifier: str) -> bool:
+        """ Unbind an event from view. """
+        if self.__unbind_call is None:
+            return False
+        elif (sequence is None) or (identifier is None):
+            return False
+        elif (not self.is_existing_definition(sequence)) or (not self.is_existing_identifier(identifier)):
+            return False
+
+        tk_bind_id: str = self.__bindings[sequence][identifier].get('tk_id', None)
+
+        if tk_bind_id is None:
+            return False
+
+        self.__unbind_call(sequence=sequence, funcid=tk_bind_id)
+
+        if len(self.__bindings[sequence].keys()) == 1:
+            del self.__bindings[sequence]
+        else:
+            del self.__bindings[sequence][identifier]
 
         return True
 
