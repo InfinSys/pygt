@@ -30,6 +30,11 @@ class ViewNavigator(ABC):
         if proxy_type is not None:
             self.__configure_control_proxy(proxy_type)
 
+    @property
+    def widget(self) -> WidgetManager:
+        """ View navigator widget manager. """
+        return self.__view_widget_manager
+
     def views(self) -> list[str]:
         """ Returns list of view identifiers. """
         return [identifier for identifier in self.__views.keys()]
@@ -93,6 +98,7 @@ class ViewNavigator(ABC):
         if self.is_existing_view(identifier):
             return False
 
+        load: bool = view_init_args.pop('load', True)
         restrict: bool = view_init_args.pop('restrict', False)
         condition = view_init_args.pop('condition', None)
         show: bool = view_init_args.pop('show', False)
@@ -101,12 +107,24 @@ class ViewNavigator(ABC):
         show = show if restrict is False else False
 
         view_init_args.update(self.__default_view_args)
-        context_init_args: dict[str, any] = {
-            f"{view_arg}": view_type(**view_init_args),
-            f"{view_arg}_id": identifier,
-            'restrict': restrict,
-            'condition': condition
-        }
+
+        if load:
+            context_init_args: dict[str, any] = {
+                f"{view_arg}": view_type(**view_init_args),
+                f"{view_arg}_id": identifier,
+                "view_type": view_type,
+                'restrict': restrict,
+                'condition': condition
+            }
+        else:
+            context_init_args: dict[str, any] = {
+                f"{view_arg}": None,
+                f"{view_arg}_id": identifier,
+                "view_type": view_type,
+                "init_args": view_init_args,
+                "restrict": restrict,
+                "condition": condition
+            }
 
         self.__views[identifier] = context_type(**context_init_args)
         self.__view_widget_manager.new(

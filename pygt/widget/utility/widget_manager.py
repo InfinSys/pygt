@@ -53,6 +53,17 @@ class WidgetManager:
         self.__widgets[identifier] = widget
 
         return widget
+    
+    def update(self, identifier: str, widget: Widget) -> bool:
+        """ Update instance of existing widget. """
+        if not self.is_existing_widget(identifier):
+            return False
+
+        if self.__widgets[identifier] is not None:
+            return False
+
+        self.__widgets[identifier] = widget
+        return True
 
     def pack(self, identifier: str, **pack_args) -> None:
         """ Pack specified widget on view. """

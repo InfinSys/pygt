@@ -94,6 +94,14 @@ class PageNavigator(ViewNavigator):
         )
         self.update_view_info(current=page_id)
         return True
+    
+    def load_page(self, identifier: str) -> bool:
+        """ Construct specified page into memory. """
+        pg_ctx_ref: PageContext = self.get_view_context(identifier)
+        pg_ctx_ref.load(
+            widget_manager=self.view_widget_manager(),
+            view_arg="page"
+        )
 
     def attach(self, identifier: str, page_type: type, **init_args) -> bool:
         """ Include new page in viewport. """

@@ -92,6 +92,14 @@ class ViewportNavigator(ViewNavigator):
         )
         self.update_view_info(current=viewport_id)
         return True
+    
+    def load_viewport(self, identifier: str) -> bool:
+        """ Construct specified viewport into memory. """
+        vp_ctx_ref: ViewportContext = self.get_view_context(identifier)
+        vp_ctx_ref.load(
+            widget_manager=self.view_widget_manager(),
+            view_arg="viewport"
+        )
 
     def attach(self, identifier: str, viewport_type: type, **init_args) -> bool:
         """ Include new viewport in view. """
