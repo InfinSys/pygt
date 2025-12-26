@@ -3,4 +3,4 @@
 
 
 #   EXTENDED SYMBOLS
-pass
+from .photo_image import PhotoImage

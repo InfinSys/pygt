@@ -80,7 +80,6 @@ class FlatEntry(PyGTWidget, EntryModel):
                 width=self.__entry_size,
                 textvariable=self.text_variable(),
                 font=self.__text_font,
-                show=self.__mask_character,
                 justify=text_justification,
                 relief="flat",
                 bg=self.foreground_color(),
@@ -103,6 +102,7 @@ class FlatEntry(PyGTWidget, EntryModel):
 
         self.command_on_event(sequence="<FocusIn>", command=self.__on_focus_in_event, child="text_entry", add="+")
         self.command_on_event(sequence="<FocusOut>", command=self.__on_focus_out_event, child="text_entry", add="+")
+        self.command_on_event(sequence="<Return>", command=self.__on_enter_pressed_event, child="text_entry", add="+")
 
         if self.has_placeholder_text():
             self.__set_placeholder_mode(active=True)
@@ -151,8 +151,8 @@ class FlatEntry(PyGTWidget, EntryModel):
 
     def set_mask_character(self, show: str) -> None:
         """ Set entry mask character. """
-        self.__mask_character = show[0]
-        self.get_entry().config(show=show[0])
+        self.__mask_character = show
+        self.get_entry().config(show=show)
 
     def set_entry_size(self, width: int) -> None:
         """ Set width of entry. """
@@ -176,8 +176,17 @@ class FlatEntry(PyGTWidget, EntryModel):
             self.__set_placeholder_mode(active=False)
             self.text.set(value="")
 
+        if self.__mask_character is not None:
+            self.set_mask_character(show=self.__mask_character)
+
     def __on_focus_out_event(self, event: Event) -> None:
         """ Handle entry focus-out event """
         if self.has_placeholder_text() and self.is_negligable_text_value():
             self.__set_placeholder_mode(active=True)
+            if self.__mask_character is not None:
+                self.set_mask_character(show=None)
             self.text.set(value=self.placeholder_text())
+
+    def __on_enter_pressed_event(self, event: Event) -> None:
+        """ Handle return key press event """
+        self.enter_pressed_command()
