@@ -54,7 +54,10 @@ class SubwindowDispatcher:
         if not self.is_existing_subwindow(identifier):
             return False
 
-        self.__subwindows[identifier].control.close(**kwargs)
+        self.__subwindows[identifier].window_exit(**kwargs)
+        self.__subwindows[identifier].destroy()
+        self.__release_subwindow(identifier)
+        return True
 
     def __release_subwindow(self, identifier: str) -> None:
         """ Remove subwindow from dispatcher management. """

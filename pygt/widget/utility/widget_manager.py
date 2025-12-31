@@ -19,6 +19,7 @@ class WidgetManager:
     """ Application view widget manager. """
     def __init__(self) -> None:
         self.__widgets: dict[str, Widget] = {}
+        self.__pack_args: dict[str, dict[str, any]] = {}
 
     def widgets(self) -> list[str]:
         """ Returns list of managed widget identifiers. """
@@ -27,6 +28,10 @@ class WidgetManager:
     def is_existing_widget(self, identifier: str) -> bool:
         """ Returns true is a widget exists with the provided identifier. """
         return identifier in self.__widgets.keys()
+
+    def has_stored_pack_arguments(self, identifier: str) -> bool:
+        """ Returns true if widget has pack arguments stored. """
+        return (identifier in self.__pack_args.keys()) and (len(self.__pack_args[identifier].keys()) > 0)
 
     def get(self, identifier: str) -> Widget:
         """ Returns requested widget. """
@@ -65,12 +70,46 @@ class WidgetManager:
         self.__widgets[identifier] = widget
         return True
 
-    def pack(self, identifier: str, **pack_args) -> None:
+    def pack(self, identifier: str, save_args: bool = False, **pack_args) -> None:
         """ Pack specified widget on view. """
         if not self.is_existing_widget(identifier):
             return
 
+        if save_args:
+            self.__pack_args[identifier] = pack_args
+
         self.__widgets[identifier].pack(**pack_args)
+
+    def forget(self, identifier: str) -> bool:
+        """ Remove specified widget from layout manager (screen). """
+        if not self.is_existing_widget(identifier):
+            return False
+
+        self.__widgets[identifier].pack_forget()
+        return True
+
+    def restore(self, identifier: str, delete_args: bool = True, **opt_new_pack) -> bool:
+        """ Restore specified widget in layout manager (screen). """
+        if not self.is_existing_widget(identifier):
+            return False
+
+        if (len(opt_new_pack.keys()) == 0) and (not self.has_stored_pack_arguments(identifier)):
+            return False
+
+        if len(opt_new_pack.keys()) == 0:
+            self.__widgets[identifier].pack(
+                **self.__pack_args[identifier]
+            )
+        else:
+            opt_new_pack.update(self.__pack_args.get(identifier, {}))
+            self.__widgets[identifier].pack(
+                **opt_new_pack
+            )
+
+        if delete_args and self.has_stored_pack_arguments(identifier):
+            del self.__pack_args[identifier]
+
+        return True
 
     def remove(self, identifier: str) -> bool:
         """ Remove specified widget from view management. """

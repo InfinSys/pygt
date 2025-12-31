@@ -29,11 +29,18 @@ class PhotoImage(PyGTWidget):
             print(f"ERROR: No such image at path: {self.__path}")
             return
 
-        self.__image_label: tk.Label = tk.Label(
-            master=self,
-            image=self.__photo
+        self.interface.new(
+            identifier="img_label",
+            widget=tk.Label(
+                master=self,
+                image=self.__photo
+            )
         )
-        self.__image_label.pack(expand=True)
+        self.interface.pack(
+            identifier="img_label",
+            expand=True
+        )
+        self.__image_label: tk.Label = self.interface.get(identifier="img_label")
 
     def set_path(self, img_path: str) -> None:
         """ Set image path. """

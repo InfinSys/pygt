@@ -6,6 +6,7 @@
 from .entry_widget_model import EntryModel
 from pygt.widget.base_widget import PyGTWidget
 from tkinter import Widget, Entry, Event
+import tkinter as tk
 
 
 #   INTERNAL IMPORTS
@@ -115,6 +116,16 @@ class FlatEntry(PyGTWidget, EntryModel):
         """ Returns entry text font. """
         return self.__text_font
 
+    def set_text(self, value: str) -> None:
+        """ Set text of entry. """
+        if value.strip() == "":
+            self.text.set(value=self.placeholder_text())
+            self.__set_placeholder_mode(active=True)
+        else:
+            self.__set_placeholder_mode(active=False)
+            self.text.set(value=value)
+            self.send_insert_caret_to_end()
+
     def font_color(self) -> str:
         """ Returns entry font color. """
         return self.__font_clr
@@ -144,6 +155,14 @@ class FlatEntry(PyGTWidget, EntryModel):
         """ Set entry font color. """
         self.__font_clr = color
         self.get_entry().config(fg=color)
+
+    def send_insert_caret_to_end(self) -> None:
+        """ Send the text entry caret to end of field text. """
+        self.interface.get("text_entry").icursor(tk.END)
+
+    def send_insert_caret_to_front(self) -> None:
+        """ Send the text entry caret to front of field text. """
+        self.interface.get("text_entry").icursor(0)
 
     def set_placeholder_font_color(self, color: str) -> None:
         """ Set entry placeholder text font color. """

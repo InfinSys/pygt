@@ -124,6 +124,8 @@ class ViewEventHandler:
 
     def unbind(self, sequence: str, identifier: str) -> bool:
         """ Unbind an event from view. """
+        sequence = self.__format_sequence_str(sequence)
+
         if self.__unbind_call is None:
             return False
         elif (sequence is None) or (identifier is None):

@@ -91,6 +91,46 @@ class PyGTWidget(CTkFrame):
         """ Returns widget size as tuple. """
         return self.winfo_width(), self.winfo_height()
 
+    def bounds(self) -> tuple[int, int, int, int]:
+        """ Returns top-left and bottom-right most
+            coordinates of widget bounds box relative
+            client to display. """
+        self.update_idletasks()
+        x_pos: int = self.winfo_rootx()
+        y_pos: int = self.winfo_rooty()
+        width_: int = self.winfo_width()
+        height_: int = self.winfo_height()
+        return x_pos, y_pos, (x_pos + width_), (y_pos + height_)
+
+    def is_overlapping(self, widget: any) -> bool:
+        ax1, ay1, ax2, ay2 = self.bounds()
+
+        if issubclass(type(widget), PyGTWidget):
+            widget: PyGTWidget
+            bx1, by1, bx2, by2 = widget.bounds()
+            return not (
+                ax2 <= bx1 or  # 'a' is left of 'b'
+                ax1 >= bx2 or  # 'a' is right of 'b'
+                ay2 <= by1 or  # 'a' is above 'b'
+                ay1 >= by2     # 'a' is below 'b'
+            )
+        elif issubclass(type(widget), Widget):
+            widget: Widget
+            widget.update_idletasks()
+            bx1: int = widget.winfo_rootx()
+            by1: int = widget.winfo_rooty()
+            bx2: int = bx1 + widget.winfo_width()
+            by2: int = by1 + widget.winfo_height()
+            return not (
+                ax2 <= bx1 or  # 'a' is left of 'b'
+                ax1 >= bx2 or  # 'a' is right of 'b'
+                ay2 <= by1 or  # 'a' is above 'b'
+                ay1 >= by2     # 'a' is below 'b'
+            )
+        else:
+            print(f"\nWARNING: Cannot validate overlap of 'PyGTWidget' type versus '{type(widget)}'!")
+            return False  # Invalid type for check
+
     def set_foreground_color(self, color: str) -> None:
         """ Set widget foreground color. """
         self.__foreground_clr = color
